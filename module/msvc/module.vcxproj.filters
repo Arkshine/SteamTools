@@ -31,6 +31,9 @@
     <Filter Include="SourceHook">
       <UniqueIdentifier>{4fe122c9-67a0-43c8-8813-f6c8bbd79a23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pawn Includes">
+      <UniqueIdentifier>{9f5853e0-c6c0-435b-a3e9-0d9d3b63ae28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\public\sdk\amxxmodule.cpp">
@@ -122,5 +125,13 @@
     <ClInclude Include="..\..\public\sourcehook\sourcehook_impl.h">
       <Filter>SourceHook</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amxmodx\steamtools.inc">
+      <Filter>Pawn Includes</Filter>
+    </None>
+    <None Include="..\..\amxmodx\steamtools_const.inc">
+      <Filter>Pawn Includes</Filter>
+    </None>
   </ItemGroup>
 </Project>

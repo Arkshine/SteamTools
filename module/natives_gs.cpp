@@ -17,6 +17,7 @@ inline edict_t* INDEXENT2(int index)
 	}
 }
 
+// native bool:Steam_IsVACEnabled();
 static cell AMX_NATIVE_CALL Steam_IsVACEnabled(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -29,6 +30,7 @@ static cell AMX_NATIVE_CALL Steam_IsVACEnabled(AMX* amx, cell* params)
 	return pServer->BSecure() ? 1 : 0;
 }
 
+// native Steam_GetPublicIP(octets[4]);
 static cell AMX_NATIVE_CALL Steam_GetPublicIP(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -50,11 +52,13 @@ static cell AMX_NATIVE_CALL Steam_GetPublicIP(AMX* amx, cell* params)
 	return 1;
 }
 
+// native bool:Steam_IsLoaded();
 static cell AMX_NATIVE_CALL Steam_IsLoaded(AMX* amx, cell* params)
 {
 	return g_SteamTools->IsSteamToolsLoaded() ? 1 : 0;
 }
 
+// native Steam_SetGameDescription(const description[]);
 static cell AMX_NATIVE_CALL Steam_SetGameDescription(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -72,6 +76,7 @@ static cell AMX_NATIVE_CALL Steam_SetGameDescription(AMX* amx, cell* params)
 	return 1;
 }
 
+// native bool:Steam_IsConnected();
 static cell AMX_NATIVE_CALL Steam_IsConnected(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -84,6 +89,7 @@ static cell AMX_NATIVE_CALL Steam_IsConnected(AMX* amx, cell* params)
 	return pServer->BLoggedOn() ? 1 : 0;
 }
 
+// native Steam_SetRule(const key[], const value[]);
 static cell AMX_NATIVE_CALL Steam_SetRule(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -102,6 +108,7 @@ static cell AMX_NATIVE_CALL Steam_SetRule(AMX* amx, cell* params)
 	return 1;
 }
 
+// native Steam_ClearRules();
 static cell AMX_NATIVE_CALL Steam_ClearRules(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -116,6 +123,7 @@ static cell AMX_NATIVE_CALL Steam_ClearRules(AMX* amx, cell* params)
 	return 1;
 }
 
+// native Steam_ForceHeartbeat();
 static cell AMX_NATIVE_CALL Steam_ForceHeartbeat(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -130,16 +138,16 @@ static cell AMX_NATIVE_CALL Steam_ForceHeartbeat(AMX* amx, cell* params)
 	return 1;
 }
 
+// native Steam_GroupIDToCSteamID(groupID, steamID[], maxlength);
 static cell AMX_NATIVE_CALL Steam_GroupIDToCSteamID(AMX* amx, cell* params)
 {
 	char CSteamIDString[128];
-	size_t numBytes = UTIL_Format(CSteamIDString, params[3], "%llu", CSteamID(params[1], k_EUniversePublic, k_EAccountTypeClan).ConvertToUint64());
+	UTIL_Format(CSteamIDString, params[3], "%llu", CSteamID(params[1], k_EUniversePublic, k_EAccountTypeClan).ConvertToUint64());
 
-	MF_SetAmxString(amx, params[2], CSteamIDString, params[3]);
-
-	return numBytes;
+	return MF_SetAmxString(amx, params[2], CSteamIDString, params[3]);
 }
 
+// native Steam_CSteamIDToGroupID(const steamID[]);
 static cell AMX_NATIVE_CALL Steam_CSteamIDToGroupID(AMX* amx, cell* params)
 {
 	int length;
@@ -220,6 +228,7 @@ static cell AMX_NATIVE_CALL Steam_CSteamIDToRenderedID(AMX* amx, cell* params)
 	return MF_SetAmxString(amx, params[2], renderedSteamIDString, params[3]);
 }
 
+// native bool:Steam_RequestGroupStatus(client, groupAccountID);
 static cell AMX_NATIVE_CALL Steam_RequestGroupStatus(AMX* amx, cell* params)
 {
 	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();

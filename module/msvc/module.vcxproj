@@ -43,6 +43,10 @@
     <ClInclude Include="..\sw_gameserver.h" />
     <ClInclude Include="..\sw_hooks.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\amxmodx\steamtools.inc" />
+    <None Include="..\..\amxmodx\steamtools_const.inc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{933B0D94-C6EC-47FB-AE34-2DC9F2B6D851}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
