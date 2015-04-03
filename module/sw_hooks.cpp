@@ -37,7 +37,7 @@ bool SteamToolsGSHooks::WasRestartRequested()
 {
 	bool wasRestartRequested = SH_CALL(g_SteamTools->m_GameServer->GetGameServer(), &ISteamGameServer::WasRestartRequested)();
 
-	if (wasRestartRequested && UTIL_CheckForPublic("Steam_RestartRequested"))
+	if (wasRestartRequested)
 	{
 		wasRestartRequested = MF_ExecuteForward(m_ForwardRestartRequested) > 0;
 	}

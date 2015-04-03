@@ -37,26 +37,6 @@ void OnStartFrame()
 	RETURN_META(MRES_IGNORED);
 }
 
-bool UTIL_CheckForPublic(const char* publicName)
-{
-	AMX* amx;
-	int iFunctionIndex;
-	int i = 0;
-	char blah[64];
-
-	strncpy(blah, publicName, sizeof(blah) - 1);
-
-	while ((amx = MF_GetScriptAmx(i++)) != nullptr)
-	{
-		if (MF_AmxFindPublic(amx, blah, &iFunctionIndex) == AMX_ERR_NONE)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 CSteamID atocsteamid(const char *pRenderedID)
 {
 	// Convert the Steam2 ID string to a Steam2 ID structure
