@@ -54,13 +54,10 @@ void SteamToolsGSHooks::LogOnAnonymous(void)
 		SH_RETURN_META(SH_MRES_SUPERCEDE);
 	}
 
-// 	if (!UTIL_CheckForPublic("Steam_TokenRequested"))
-// 	{
-// 		SH_RETURN_META(SH_MRES_IGNORED);
-// 	}
-// 
-// 	char token[256];
-// 	MF_ExecuteForward(m_ForwardTokenRequested, MF_PrepareCharArrayA(token, sizeof(token), true), sizeof(token) - 1);
+	if (!strlen(CvarSetSteamAccount->string))
+	{
+		SH_RETURN_META(SH_MRES_IGNORED);
+	}
 
 	pGameServer->LogOn(CvarSetSteamAccount->string);
 
