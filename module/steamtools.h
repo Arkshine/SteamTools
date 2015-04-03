@@ -30,7 +30,7 @@ class SteamTools
 
 		SteamToolsGSDetours*  m_Detours;
 		SteamToolsGameServer* m_GameServer;
-		SteamToolsGSForwards*   m_Forwards;
+		SteamToolsGSForwards* m_Forwards;
 		SteamToolsGSHooks*    m_Hooks;
 		SteamWorksGSNatives*  m_Natives;
 

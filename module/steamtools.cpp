@@ -3,7 +3,7 @@
 
 ke::AutoPtr<SteamTools> g_SteamTools;
 
-SteamTools::SteamTools() : m_LastThinkTime(0.0f), m_Loaded(false), m_Callback(nullptr)
+SteamTools::SteamTools() : m_LastThinkTime(0.0f), m_Callback(nullptr), m_Loaded(false)
 {
 }
 
