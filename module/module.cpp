@@ -14,7 +14,7 @@ void OnAmxxAttach()
 	g_SteamTools = new SteamTools;
 
 	g_SteamTools->Init();
-	g_SteamTools->GetState(&OnSteamAPIActivated);
+	g_SteamTools->RequestState(OnSteamAPIActivated);
 }
 
 void OnPluginsLoaded()
@@ -27,7 +27,7 @@ void OnSteamAPIActivated()
 {
 	g_pFunctionTable_Post->pfnStartFrame = OnStartFrame;
 
-	MF_Log("[STEAMTOOLS] Loading complete.\n");
+	SERVER_PRINT("[STEAMTOOLS] Loading complete.\n");
 }
 
 void OnStartFrame()

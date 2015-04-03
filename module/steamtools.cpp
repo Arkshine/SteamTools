@@ -3,7 +3,7 @@
 
 ke::AutoPtr<SteamTools> g_SteamTools;
 
-SteamTools::SteamTools() : m_LastThinkTime(0.0f), m_Callback(nullptr), m_Loaded(false)
+SteamTools::SteamTools() : m_Callback(nullptr), m_LastThinkTime(0.0f), m_Loaded(false)
 {
 }
 
@@ -25,9 +25,9 @@ void SteamTools::Init()
 	m_Natives    = new SteamWorksGSNatives;
 }
 
-void SteamTools::GetState(void* func)
+void SteamTools::RequestState(void(*func)())
 {
-	m_Callback = reinterpret_cast<void(*)()>(func);
+	m_Callback = func;
 }
 
 void SteamTools::OnAPIActivated()

@@ -23,7 +23,7 @@ class SteamTools
 		void Think();
 		bool IsSteamToolsLoaded();
 
-		void GetState(void* func);
+		void RequestState(void(*func)());
 		void OnAPIActivated();
 
 	public:
