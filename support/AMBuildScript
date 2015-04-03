@@ -23,11 +23,11 @@ class ModuleConfig(object):
     return not getattr(builder.options, 'disable_auto_versioning', False)
 
   def detectProductVersion(self):
-    builder.AddConfigureFile('product.version')
+    builder.AddConfigureFile('../product.version')
 
     # For OS X dylib versioning
     import re
-    with open(os.path.join(builder.sourcePath, 'product.version'), 'r') as fp:
+    with open(os.path.join(builder.sourcePath, '..', 'product.version'), 'r') as fp:
       productContents = fp.read()
     m = re.match('(\d+)\.(\d+)\.(\d+).*', productContents)
     if m == None:
@@ -47,9 +47,9 @@ class ModuleConfig(object):
         raise Exception('Metamod path does not exist: {0}'.format(metamod_path))
     else:
       try_paths = [
-        os.path.join(builder.sourcePath, '..', 'metamod'),
-        os.path.join(builder.sourcePath, '..', 'metamod-am'),
-        os.path.join(builder.sourcePath, '..', 'metamod-hl1'),
+        os.path.join(builder.sourcePath, '..', '..', 'metamod'),
+        os.path.join(builder.sourcePath, '..', '..', 'metamod-am'),
+        os.path.join(builder.sourcePath, '..', '..', 'metamod-hl1'),
       ]
       for try_path in try_paths:
         if os.path.exists(os.path.join(try_path, 'metamod')):
@@ -69,7 +69,7 @@ class ModuleConfig(object):
         raise Exception('Metamod path does not exist: {0}'.format(hlsdk_path))
     else:
       try_paths = [
-        os.path.join(builder.sourcePath, '..', 'hlsdk'),
+        os.path.join(builder.sourcePath, '..', '..', 'hlsdk'),
       ]
       for try_path in try_paths:
         if os.path.exists(try_path):
@@ -155,6 +155,8 @@ class ModuleConfig(object):
         '_CRT_SECURE_NO_WARNINGS',
         '_CRT_NONSTDC_NO_DEPRECATE',
         '_ITERATOR_DEBUG_LEVEL=0',
+        '_USING_V120_SDK71_',
+        'HAVE_STDINT_H',
       ]
       cfg.cflags += [
         '/W3',
@@ -227,24 +229,22 @@ class ModuleConfig(object):
 
     # Finish up.
     cfg.defines += [
-      'HAVE_STDINT_H',
       'AMX_NOPROPLIST',
       'PAWN_CELL_SIZE=32',
-      'MODULE_BUILD',
       'MODULE_USE_VERSIONLIB',
     ]
 
     if self.use_auto_versioning():
-        cfg.defines += ['AMXX_GENERATED_BUILD']
+        cfg.defines += ['MODULE_GENERATED_BUILD']
         cfg.includes += [os.path.join(builder.buildPath, 'includes')]
-        cfg.includes += [os.path.join(builder.sourcePath, 'support', 'versionlib')]
+        cfg.includes += [os.path.join(builder.sourcePath, '..', 'support', 'versionlib')]
         
-    cfg.includes += [os.path.join(builder.sourcePath, 'public')]
-    cfg.includes += [os.path.join(builder.sourcePath, 'public', 'sdk')]
-    cfg.includes += [os.path.join(builder.sourcePath, 'public', 'amtl', 'include')]
-    cfg.includes += [os.path.join(builder.sourcePath, 'public', 'memtools')]
-    cfg.includes += [os.path.join(builder.sourcePath, 'public', 'sourcehook')]
-    cfg.includes += [os.path.join(builder.sourcePath, 'public', 'open-steamworks', 'Open Steamworks')]
+    cfg.includes += [os.path.join(builder.sourcePath, '..', 'module')]
+    cfg.includes += [os.path.join(builder.sourcePath, '..', 'public')]
+    cfg.includes += [os.path.join(builder.sourcePath, '..', 'public', 'sdk')]
+    cfg.includes += [os.path.join(builder.sourcePath, '..', 'public', 'amtl', 'include')]
+    cfg.includes += [os.path.join(builder.sourcePath, '..', 'public', 'memtools')]
+    cfg.includes += [os.path.join(builder.sourcePath, '..', 'public', 'open-steamworks', 'Open Steamworks')]
     return
 
   #
@@ -272,7 +272,7 @@ class ModuleConfig(object):
         'RC_COMPILE',
       ]
       if self.use_auto_versioning():
-        binary.compiler.rcdefines += ['AMXX_GENERATED_BUILD']
+        binary.compiler.rcdefines += ['MODULE_GENERATED_BUILD']
     elif builder.target_platform == 'mac':
       if binary.type == 'library':
         binary.compiler.postlink += [
@@ -323,18 +323,33 @@ Module.configure()
 
 if Module.use_auto_versioning():
   Module.generated_headers = builder.RunScript(
-    'support/Versioning',
+    'Versioning',
     { 'Module': Module }
   )
   Module.versionlib = builder.RunScript(
-    'support/versionlib/AMBuilder',
+    'versionlib/AMBuilder',
     { 'Module': Module }
   )
 
-builder.RunBuildScripts(
-  [
-    'module/AMBuilder',
-  ],
-  { 'Module': Module }
-)
+binary = Module.MetaModule(builder, 'steamtools')
+
+binary.sources = [
+  '../public/sdk/amxxmodule.cpp',
+  '../public/memtools/CDetour/detours.cpp',
+  '../public/memtools/CDetour/asm/asm.c',
+  '../public/sourcehook/sourcehook.cpp',
+  '../module/module.cpp',
+  '../module/natives_gs.cpp',
+  '../module/natives_http.cpp',
+  '../module/steamtools.cpp',
+  '../module/sw_detours.cpp',
+  '../module/sw_forwards.cpp',
+  '../module/sw_gameserver.cpp',
+  '../module/sw_hooks.cpp',
+]
+
+if builder.target_platform == 'windows':
+  binary.sources += ['../module/version.rc']
+
+Module.binaries += [builder.Add(binary)]
 
