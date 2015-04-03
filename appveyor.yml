@@ -24,7 +24,7 @@ build_script:
 - '"%VS120COMNTOOLS%\vsvars32.bat"'
 - mkdir build
 - cd build
-- c:\python27\python ../support/configure.py --enable-optimize --no-mysql --disable-auto-versioning
+- c:\python27\python ../support/configure.py --enable-optimize --disable-auto-versioning
 - c:\python27\scripts\ambuild
 
 cache:
