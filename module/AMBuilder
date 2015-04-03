@@ -1,0 +1,24 @@
+# vim: set sts=2 ts=8 sw=2 tw=99 et ft=python:
+import os.path
+
+binary = Module.MetaModule(builder, 'steamtools')
+
+binary.sources = [
+  '../public/sdk/amxxmodule.cpp',
+  '../public/memtools/CDetour/detours.cpp',
+  '../public/memtools/CDetour/asm/asm.c',
+  '../public/sourcehook/sourcehook.cpp',
+  'module.cpp',
+  'natives_gs.cpp',
+  'natives_http.cpp',
+  'steamtools.cpp',
+  'sw_detours.cpp',
+  'sw_forwards.cpp',
+  'sw_gameserver.cpp',
+  'sw_hooks.cpp',
+]
+
+if builder.target_platform == 'windows':
+  binary.sources += ['version.rc']
+
+Module.binaries += [builder.Add(binary)]

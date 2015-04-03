@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\public\memtools\CDetour\asm\asm.c" />
+    <ClCompile Include="..\..\public\memtools\CDetour\detours.cpp" />
+    <ClCompile Include="..\..\public\memtools\MemoryUtils.cpp" />
+    <ClCompile Include="..\..\public\sdk\amxxmodule.cpp" />
+    <ClCompile Include="..\..\public\sourcehook\sourcehook.cpp" />
+    <ClCompile Include="..\module.cpp" />
+    <ClCompile Include="..\natives_gs.cpp" />
+    <ClCompile Include="..\steamtools.cpp" />
+    <ClCompile Include="..\sw_detours.cpp" />
+    <ClCompile Include="..\sw_forwards.cpp" />
+    <ClCompile Include="..\sw_gameserver.cpp" />
+    <ClCompile Include="..\sw_hooks.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\public\memtools\CDetour\asm\asm.h" />
+    <ClInclude Include="..\..\public\memtools\CDetour\detourhelpers.h" />
+    <ClInclude Include="..\..\public\memtools\CDetour\detours.h" />
+    <ClInclude Include="..\..\public\memtools\MemoryUtils.h" />
+    <ClInclude Include="..\..\public\sdk\amxxmodule.h" />
+    <ClInclude Include="..\..\public\sourcehook\FastDelegate.h" />
+    <ClInclude Include="..\..\public\sourcehook\sourcehook.h" />
+    <ClInclude Include="..\..\public\sourcehook\sourcehook_impl.h" />
+    <ClInclude Include="..\natives_gs.h" />
+    <ClInclude Include="..\steamtools.h" />
+    <ClInclude Include="..\interfaces.h" />
+    <ClInclude Include="..\moduleconfig.h" />
+    <ClInclude Include="..\module.h" />
+    <ClInclude Include="..\sw_detours.h" />
+    <ClInclude Include="..\sw_forwards.h" />
+    <ClInclude Include="..\sw_gameserver.h" />
+    <ClInclude Include="..\sw_hooks.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{933B0D94-C6EC-47FB-AE34-2DC9F2B6D851}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Win32Project1</RootNamespace>
+    <ProjectName>SteamTools</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>steamtools_amxx</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>steamtools_amxx</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_USING_V120_SDK71_;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_ITERATOR_DEBUG_LEVEL=0;_CRT_NONSTDC_NO_DEPRECATE;HAVE_STDINT_H;_DEBUG;_WINDOWS;_USRDLL;WIN32PROJECT1_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\public;..\..\public\sdk;..\..\public\amtl\include;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <BrowseInformation>true</BrowseInformation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_ITERATOR_DEBUG_LEVEL=0;_CRT_NONSTDC_NO_DEPRECATE;HAVE_STDINT_H;NDEBUG;_WINDOWS;_USRDLL;HTTP_DOWNLOAD_MANAGER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\public;..\..\public\sdk;..\..\public\amtl\include;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ExpandAttributedSource>true</ExpandAttributedSource>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AssemblyDebug>true</AssemblyDebug>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

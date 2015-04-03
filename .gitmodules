@@ -1,0 +1,6 @@
+[submodule "public/amtl"]
+	path = public/amtl
+	url = https://github.com/alliedmodders/amtl.git
+[submodule "public/open-steamworks"]
+	path = public/open-steamworks
+	url = https://github.com/Arkshine/open-steamworks.git

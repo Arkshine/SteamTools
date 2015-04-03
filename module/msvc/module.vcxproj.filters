@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Module SDK">
+      <UniqueIdentifier>{fd3ba4f7-cf4e-46e0-a836-db0ae96dfe80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module SDK\SDK Base">
+      <UniqueIdentifier>{c616874c-606c-44a6-954d-8a477eb0d6cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resources Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Memtools">
+      <UniqueIdentifier>{c84c088d-ea3a-4228-970a-fda8e11e61ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memtools\CDetour">
+      <UniqueIdentifier>{1038cd4a-f927-4aca-91b0-7578cb4766ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memtools\CDetour\asm">
+      <UniqueIdentifier>{8db646a4-5212-48a2-8f7d-5fc726d42a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceHook">
+      <UniqueIdentifier>{4fe122c9-67a0-43c8-8813-f6c8bbd79a23}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\public\sdk\amxxmodule.cpp">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\memtools\MemoryUtils.cpp">
+      <Filter>Memtools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\memtools\CDetour\detours.cpp">
+      <Filter>Memtools\CDetour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\memtools\CDetour\asm\asm.c">
+      <Filter>Memtools\CDetour\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\module.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sw_detours.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sw_gameserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sw_forwards.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\steamtools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sw_hooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\natives_gs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\sourcehook\sourcehook.cpp">
+      <Filter>SourceHook</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\public\sdk\amxxmodule.h">
+      <Filter>Module SDK\SDK Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\memtools\MemoryUtils.h">
+      <Filter>Memtools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\memtools\CDetour\detourhelpers.h">
+      <Filter>Memtools\CDetour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\memtools\CDetour\detours.h">
+      <Filter>Memtools\CDetour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\memtools\CDetour\asm\asm.h">
+      <Filter>Memtools\CDetour\asm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\module.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\moduleconfig.h">
+      <Filter>Module SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sw_detours.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sw_gameserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sw_forwards.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sw_hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\steamtools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\natives_gs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interfaces.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\sourcehook\FastDelegate.h">
+      <Filter>SourceHook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\sourcehook\sourcehook.h">
+      <Filter>SourceHook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\sourcehook\sourcehook_impl.h">
+      <Filter>SourceHook</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
