@@ -8,7 +8,6 @@ branches:
     - master
     
 skip_tags: true
-shallow_clone: true
 
 install:
 - git submodule update --init --recursive
