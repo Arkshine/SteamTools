@@ -41,9 +41,9 @@ class SteamToolsGameServer
 
 	private:
 
-		ISteamGameServer* SteamToolsGameServer::GetISteamGameServer(HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char* pchVersion);
-		ISteamUtils*      SteamToolsGameServer::GetISteamUtils     (HSteamPipe hSteamPipe, const char* pchVersion);
-		ISteamHTTP*       SteamToolsGameServer::GetISteamHTTP      (HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char* pchVersion);
+		ISteamGameServer* GetISteamGameServer(HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char* pchVersion);
+		ISteamUtils*      GetISteamUtils     (HSteamPipe hSteamPipe, const char* pchVersion);
+		ISteamHTTP*       GetISteamHTTP      (HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char* pchVersion);
 
 	private:
 
