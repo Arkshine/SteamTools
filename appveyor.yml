@@ -1,57 +1,34 @@
-#---------------------------------#
-#      general configuration      #
-#---------------------------------#
 
-# branches to build
+version: 1.0.{build}
+
+clone_folder: c:\projects\amxmodx
+
 branches:
   only:
     - master
-
-# do not build on tags (GitHub only)
+    
 skip_tags: true
-
-# donwload specific commit as a zip archive (GitHub only)
 shallow_clone: true
 
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
-
-# scripts that are called at very beginning, before repo cloning
-init:
-  - git config --global core.autocrlf input
-
-# scripts that run after cloning repository
 install:
-  - git submodule update --init --recursive
-  - cmd: if not exist ambuild    (git clone -q --branch=master https://github.com/alliedmodders/ambuild)
-  - cmd: if not exist metamod-am (git clone -q --branch=master https://github.com/alliedmodders/metamod-hl1 metamod-am)
-  - cmd: if not exist hlsdk      (git clone -q --branch=master https://github.com/alliedmodders/hlsdk)
-  - cmd: cd ambuild && python setup.py install
-  
-  - cmd: call "%VS100COMNTOOLS%/../../VC/vcvarsall.bat" x86  # setup mcvc paths
-  - cmd: set PATH=%PATH%;C:/Python27/Scripts                 # export ambuild script
-  
-# build cache
+- git submodule update --init --recursive
+- 'c:'
+- chdir c:\projects
+- git clone https://github.com/alliedmodders/ambuild
+- git clone https://github.com/alliedmodders/metamod-hl1 metamod-am
+- git clone https://github.com/alliedmodders/hlsdk
+- cd ambuild
+- c:\python27\python setup.py install
+- cd ..\amxmodx
+
+build_script:
+- '"%VS120COMNTOOLS%\vsvars32.bat"'
+- mkdir build
+- cd build
+- c:\python27\python ../support/configure.py --enable-optimize --no-mysql --disable-auto-versioning
+- c:\python27\scripts\ambuild
+
 cache:
   - ambuild
   - metamod-am
   - hlsdk
-
-#---------------------------------#
-#       build configuration       #
-#---------------------------------#
-
-# to run your custom scripts instead of automatic MSBuild
-build_script:
-  - cmd: cd .. && mkdir build && cd build
-  - cmd: python ../support/configure.py --enable-optimize --disable-auto-versioning --metamod="../metamod-am" --hlsdk="../hlsdk"
-  - cmd: ambuild
-
-#---------------------------------#
-#      artifacts configuration    #
-#---------------------------------#
-
-artifacts:
-  - path: build/$(appveyor_project_slug)_amxx/$(appveyor_project_slug)_amxx.dll
-    name: $(appveyor_project_name)
