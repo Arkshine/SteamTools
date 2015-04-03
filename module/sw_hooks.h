@@ -14,7 +14,6 @@ class SteamToolsGSHooks
 	public:
 
 		void LogOnAnonymous();
-		EBeginAuthSessionResult BeginAuthSession(const void* pAuthTicket, int cbAuthTicket, CSteamID steamID);
 		bool WasRestartRequested();
 
 	public:
@@ -27,13 +26,11 @@ class SteamToolsGSHooks
 
 		int m_ForwardRestartRequested;
 		int m_ForwardTokenRequested;
-		int m_ForwardBeginAuthSession;
 
 	private:
 
 		int m_RestartHookID;
 		int m_logAnonHookID;
-		int m_SessionHookID;
 };
 
 #endif // _SW_GAMESERVER_HOOKS_H_
