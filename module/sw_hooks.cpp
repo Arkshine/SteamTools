@@ -9,7 +9,7 @@
 #include "sw_hooks.h"
 #include "steamtools.h"
 #include "module.h"
-#include <amxxmodule.h>
+#include "utils.h"
 
 cvar_t CvarInitSetSteamAccount = { "sv_setsteamaccount", "", FCVAR_EXTDLL | FCVAR_PROTECTED | FCVAR_NOEXTRAWHITEPACE | FCVAR_SPONLY };
 cvar_t* CvarSetSteamAccount;
@@ -27,8 +27,14 @@ SteamToolsGSHooks::SteamToolsGSHooks()
 	CVAR_REGISTER(&CvarInitSetSteamAccount);
 	CvarSetSteamAccount = CVAR_GET_POINTER(CvarInitSetSteamAccount.name);
 
-	SERVER_COMMAND("exec steamtools.cfg\n");
-	SERVER_EXECUTE();
+	char realpath[260];
+	UTIL_Format(realpath, sizeof(realpath), "%s/%s/steamtools.cfg", MF_GetModname(), MF_GetLocalInfo("amx_configdir", "addons/amxmodx/configs"));
+	
+	if (Utils::IsPathFile(realpath))
+	{
+		SERVER_COMMAND(UTIL_VarArgs("exec %s\n", realpath));
+		SERVER_EXECUTE();
+	}
 }
 
 SteamToolsGSHooks::~SteamToolsGSHooks()

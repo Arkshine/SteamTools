@@ -53,4 +53,35 @@ namespace Utils
 		steamID.SetFromSteam2(&steam2ID, k_EUniversePublic);
 		return steamID;
 	}
+
+	bool IsPathFile(const char* path)
+	{
+#if defined(WIN32)
+
+		DWORD attr = GetFileAttributes(path);
+
+		if (attr == INVALID_FILE_ATTRIBUTES)
+		{
+			return false;
+		}
+
+		if (attr & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_DEVICE))
+		{
+			return false;
+		}
+
+		return true;
+
+#elif defined(LINUX) || defined(OSX)
+
+		struct stat s;
+
+		if (stat(path, &s) != 0)
+		{
+			return false;
+		}
+
+		return S_ISREG(s.st_mode) ? true : false;
+#endif
+	}
 };
