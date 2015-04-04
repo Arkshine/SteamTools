@@ -78,14 +78,18 @@ bool SteamTools::IsSteamToolsLoaded()
 
 void SteamTools::SetServerAppID()
 {
-	ke::AutoPtr<FILE> fp;
 	char lineRead[6];
 
-	fp = fopen(MF_BuildPathname("steam_appid.txt"), "rt");
+	FILE* fp = fopen(MF_BuildPathname("steam_appid.txt"), "rt");
 
-	if (fp && fgets(lineRead, sizeof(lineRead) - 1, fp))
+	if (fp)
 	{
-		m_ServerAppID = static_cast<AppId_t>(atoi(lineRead));
+		if (fgets(lineRead, sizeof(lineRead) - 1, fp))
+		{
+			m_ServerAppID = static_cast<AppId_t>(atoi(lineRead));
+		}
+
+		fclose(fp);
 	}
 }
 
