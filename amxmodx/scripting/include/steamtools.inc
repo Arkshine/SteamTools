@@ -119,6 +119,15 @@ native bool:Steam_IsVACEnabled();
 native Steam_GetPublicIP(octets[4]);
 
 /**
+ * Gets the server's external IP address, as reported by Steam and as 32-bit unsigned integer.
+ *
+ * @note IP address is known only after server is connected to Steam.
+ *
+ * @return				Address IP as 32-bit unsigned integer
+ */
+native Steam_GetPublicIPCell();
+
+/**
  * Returns whether SteamTools is properly loaded.
  *
  * @return              True if loaded, false otherwise 

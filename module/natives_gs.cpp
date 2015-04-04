@@ -45,6 +45,19 @@ static cell AMX_NATIVE_CALL Steam_GetPublicIP(AMX* amx, cell* params)
 	return 1;
 }
 
+// native Steam_GetPublicIPCell();
+static cell AMX_NATIVE_CALL Steam_GetPublicIPCell(AMX* amx, cell* params)
+{
+	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
+
+	if (!pServer)
+	{
+		return 0;
+	}
+
+	return pServer->GetPublicIP();
+}
+
 // native bool:Steam_IsLoaded();
 static cell AMX_NATIVE_CALL Steam_IsLoaded(AMX* amx, cell* params)
 {
@@ -263,6 +276,7 @@ AMX_NATIVE_INFO GameServerNatives[] =
 {
 	{ "Steam_IsVACEnabled"            , Steam_IsVACEnabled             },
 	{ "Steam_GetPublicIP"             , Steam_GetPublicIP              },
+	{ "Steam_GetPublicIPCell"         , Steam_GetPublicIPCell          },
 	{ "Steam_IsLoaded"                , Steam_IsLoaded                 },
 	{ "Steam_SetGameDescription"      , Steam_SetGameDescription       },
 	{ "Steam_IsConnected"             , Steam_IsConnected              },
