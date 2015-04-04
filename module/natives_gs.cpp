@@ -272,6 +272,43 @@ static cell AMX_NATIVE_CALL Steam_RequestGroupStatusAuthID(AMX* amx, cell* param
 	return pServer->RequestUserGroupStatus(cSteamID, cGroupID);
 }
 
+// native EUserHasLicenseForAppResult:Steam_HasLicenseForApp(client);
+static cell AMX_NATIVE_CALL Steam_HasLicenseForApp(AMX* amx, cell* params)
+{
+	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
+
+	if (!pServer)
+	{
+		return 0;
+	}
+
+	int index = params[1];
+	int app   = params[2];
+
+	if (!MF_IsPlayerIngame(index))
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "Client index %d is invalid", index);
+		return 0;
+	}
+
+	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(index)));
+
+	if (!cSteamID.IsValid())
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "No SteamID found for client %d", params[1]);
+		return 0;
+	}
+
+	if (g_SteamTools->GetServerAppID() == k_uAppIdInvalid)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "No App ID could not be retrieved from steam_appid.txt file");
+		return 0;
+	}
+
+	return pServer->UserHasLicenseForApp(cSteamID, g_SteamTools->GetServerAppID());
+}
+
+
 AMX_NATIVE_INFO GameServerNatives[] =
 {
 	{ "Steam_IsVACEnabled"            , Steam_IsVACEnabled             },
@@ -290,6 +327,7 @@ AMX_NATIVE_INFO GameServerNatives[] =
 	{ "Steam_CSteamIDToRenderedID"    , Steam_CSteamIDToRenderedID     },
 	{ "Steam_RequestGroupStatus"      , Steam_RequestGroupStatus       },
 	{ "Steam_RequestGroupStatusAuthID", Steam_RequestGroupStatusAuthID },
+	{ "Steam_HasLicenseForApp"        , Steam_HasLicenseForApp         },
 
 	{ NULL, NULL }
 };

@@ -22,6 +22,7 @@ void OnAmxxAttach()
 
 	g_SteamTools->Init();
 	g_SteamTools->RequestState(OnSteamAPIActivated, OnSteamAPIShutdown);
+	g_SteamTools->SetServerAppID();
 }
 
 void OnPluginsLoaded()

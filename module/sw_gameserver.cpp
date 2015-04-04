@@ -25,7 +25,7 @@ SteamToolsGameServer::SteamToolsGameServer()
 	m_ServerHookID(0), 
 	m_UtilsHookID(0), 
 	m_HttpHookID(0)
-{   
+{
 }
 
 SteamToolsGameServer::~SteamToolsGameServer()

@@ -31,6 +31,8 @@ class SteamToolsGameServer
 		ISteamUtils      *GetUtils();
 		ISteamHTTP       *GetHTTP();
 
+	public:
+
 		void SetSteamClient(ISteamClient* client);
 
 		void GetUserAndPipe(HSteamUser &hSteamUser, HSteamPipe &hSteamPipe);

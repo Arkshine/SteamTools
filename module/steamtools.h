@@ -37,6 +37,8 @@ class SteamTools
 	public:
 
 		CSteamID RenderedIDToCSteamID(const char *pRenderedID);
+		AppId_t  GetServerAppID();
+		void     SetServerAppID();
 
 	public:
 
@@ -51,8 +53,9 @@ class SteamTools
 		void (*m_APiActivatedCallback)();
 		void (*m_APiShutdownCallback)();
 
-		float m_LastThinkTime;
-		bool  m_Loaded;
+		float   m_LastThinkTime;
+		bool    m_Loaded;
+		AppId_t m_ServerAppID;
 };
 
 extern ke::AutoPtr<SteamTools> g_SteamTools;
