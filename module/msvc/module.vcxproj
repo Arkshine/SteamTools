@@ -49,6 +49,11 @@
     <None Include="..\..\amxmodx\steamtools.inc" />
     <None Include="..\..\amxmodx\steamtools_const.inc" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\version.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../public;</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{933B0D94-C6EC-47FB-AE34-2DC9F2B6D851}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

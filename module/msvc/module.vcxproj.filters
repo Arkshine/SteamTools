@@ -140,4 +140,9 @@
       <Filter>Pawn Includes</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\version.rc">
+      <Filter>Resources Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
 </Project>
