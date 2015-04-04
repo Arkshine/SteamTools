@@ -62,7 +62,7 @@ forward Steam_RestartRequested();
 
 
 /**
- * Requests a client's status in a Steam group.
+ * Requests a client's status in a Steam group from a give client's index.
  * 
  * @note Response is returned in Steam_GroupStatusResult forward.
  *
@@ -72,6 +72,18 @@ forward Steam_RestartRequested();
  * @return               A bool representing whether or not the request was sent to Steam.
  */
 native bool:Steam_RequestGroupStatus(client, groupAccountID);
+
+/**
+ * Requests a client's status in a Steam group from a given Steam unique identifier.
+ * 
+ * @note Response is returned in Steam_GroupStatusResult forward.
+ *
+ * @param authID         32-bit account ID of client
+ * @param groupAccountID 32-bit account ID of group
+ *
+ * @return               A bool representing whether or not the request was sent to Steam.
+ */
+native bool:Steam_RequestGroupStatusAuthID(authID, groupAccountID);
 
 /**
  * Called when a response to a group status request is recieved.

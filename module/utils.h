@@ -15,7 +15,6 @@
 namespace Utils
 {
 	edict_t* INDEXENT2(int index);
-	CSteamID RenderedIDToCSteamID(const char *pRenderedID);
 	bool IsPathFile(const char* path);
 };
 

@@ -73,3 +73,33 @@ bool SteamTools::IsSteamToolsLoaded()
 {
 	return m_Loaded;
 }
+
+CSteamID SteamTools::RenderedIDToCSteamID(const char* pRenderedID)
+{
+	TSteamGlobalUserID steam2ID;
+	steam2ID.m_SteamInstanceID = 0;
+	steam2ID.m_SteamLocalUserID.Split.High32bits = 0;
+	steam2ID.m_SteamLocalUserID.Split.Low32bits  = 0;
+
+	const char *pchTSteam2ID = pRenderedID;
+	const char *pchOptionalLeadString = "STEAM_";
+
+	if (strncasecmp(pRenderedID, pchOptionalLeadString, strlen(pchOptionalLeadString)) == 0)
+	{
+		pchTSteam2ID = pRenderedID + strlen(pchOptionalLeadString);
+	}
+
+	char cExtraCharCheck = 0;
+
+	int cFieldConverted = sscanf(pchTSteam2ID, "%hu:%u:%u%c", &steam2ID.m_SteamInstanceID, &steam2ID.m_SteamLocalUserID.Split.High32bits, &steam2ID.m_SteamLocalUserID.Split.Low32bits, &cExtraCharCheck);
+
+	if (cExtraCharCheck != 0 || cFieldConverted == EOF || cFieldConverted < 2 || (cFieldConverted < 3 && steam2ID.m_SteamInstanceID != 1))
+	{
+		return k_steamIDNil;
+	}
+
+	CSteamID steamID;
+	steamID.SetFromSteam2(&steam2ID, k_EUniversePublic);
+
+	return steamID;
+}

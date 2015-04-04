@@ -166,7 +166,7 @@ static cell AMX_NATIVE_CALL Steam_GetCSteamIDForClient(AMX* amx, cell* params)
 
 	if (index >= 0)
 	{
-		cSteamID = Utils::RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(index)));
+		cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(index)));
 	}
 
 	if (!cSteamID.IsValid())
@@ -175,10 +175,10 @@ static cell AMX_NATIVE_CALL Steam_GetCSteamIDForClient(AMX* amx, cell* params)
 		return 0;
 	}
 
-	char CSteamIDString[128];
-	UTIL_Format(CSteamIDString, params[3], "%llu", cSteamID.ConvertToUint64());
+	char cSteamIDString[128];
+	UTIL_Format(cSteamIDString, params[3], "%llu", cSteamID.ConvertToUint64());
 
-	return MF_SetAmxString(amx, params[2], CSteamIDString, params[3]);
+	return MF_SetAmxString(amx, params[2], cSteamIDString, params[3]);
 }
 
 // native Steam_RenderedIDToCSteamID(const renderedID[], steamID[], maxlength);
@@ -187,7 +187,7 @@ static cell AMX_NATIVE_CALL Steam_RenderedIDToCSteamID(AMX* amx, cell* params)
 	int length;
 	const char* renderedSteamID = MF_GetAmxString(amx, params[1], 0, &length);
 
-	CSteamID cSteamID = Utils::RenderedIDToCSteamID(renderedSteamID);
+	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(renderedSteamID);
 
 	if (!cSteamID.IsValid())
 	{
@@ -195,10 +195,10 @@ static cell AMX_NATIVE_CALL Steam_RenderedIDToCSteamID(AMX* amx, cell* params)
 		return 0;
 	}
 
-	char CSteamIDString[128];
-	UTIL_Format(CSteamIDString, params[3], "%llu", cSteamID.ConvertToUint64());
+	char cSteamIDString[128];
+	UTIL_Format(cSteamIDString, params[3], "%llu", cSteamID.ConvertToUint64());
 
-	return MF_SetAmxString(amx, params[2], CSteamIDString, params[3]);
+	return MF_SetAmxString(amx, params[2], cSteamIDString, params[3]);
 }
 
 // native Steam_CSteamIDToRenderedID(const steamID[], renderedID[], maxlength);
@@ -231,33 +231,51 @@ static cell AMX_NATIVE_CALL Steam_RequestGroupStatus(AMX* amx, cell* params)
 		return 0;
 	}
 
-	CSteamID pSteamID = Utils::RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(params[1])));
+	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(params[1])));
+	CSteamID cGroupID = CSteamID(params[2], k_EUniversePublic, k_EAccountTypeClan);
 
-	if (!pSteamID.IsValid())
+	if (!cSteamID.IsValid())
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "No SteamID found for client %d", params[1]);
 		return 0;
 	}
 
-	return pServer->RequestUserGroupStatus(pSteamID, CSteamID(params[2], k_EUniversePublic, k_EAccountTypeClan));
+	return pServer->RequestUserGroupStatus(cSteamID, cGroupID);
+}
+
+// native bool:Steam_RequestGroupStatusAuthID(authID, groupAccountID);
+static cell AMX_NATIVE_CALL Steam_RequestGroupStatusAuthID(AMX* amx, cell* params)
+{
+	ISteamGameServer* pServer = g_SteamTools->m_GameServer->GetGameServer();
+
+	if (!pServer)
+	{
+		return 0;
+	}
+
+	CSteamID cSteamID = CSteamID(params[1], k_EUniversePublic, k_EAccountTypeIndividual);
+	CSteamID cGroupID = CSteamID(params[2], k_EUniversePublic, k_EAccountTypeClan);
+
+	return pServer->RequestUserGroupStatus(cSteamID, cGroupID);
 }
 
 AMX_NATIVE_INFO GameServerNatives[] =
 {
-	{ "Steam_IsVACEnabled"        , Steam_IsVACEnabled            },
-	{ "Steam_GetPublicIP"         , Steam_GetPublicIP             },
-	{ "Steam_IsLoaded"            , Steam_IsLoaded                },
-	{ "Steam_SetGameDescription"  , Steam_SetGameDescription      },
-	{ "Steam_IsConnected"         , Steam_IsConnected             },
-	{ "Steam_SetRule"             , Steam_SetRule                 },
-	{ "Steam_ClearRules"          , Steam_ClearRules              },
-	{ "Steam_ForceHeartbeat"      , Steam_ForceHeartbeat          },
-	{ "Steam_GroupIDToCSteamID"   , Steam_GroupIDToCSteamID       },
-	{ "Steam_CSteamIDToGroupID"   , Steam_CSteamIDToGroupID       },
-	{ "Steam_GetCSteamIDForClient", Steam_GetCSteamIDForClient    },
-	{ "Steam_RenderedIDToCSteamID", Steam_RenderedIDToCSteamID    },
-	{ "Steam_CSteamIDToRenderedID", Steam_CSteamIDToRenderedID    },
-	{ "Steam_RequestGroupStatus"  , Steam_RequestGroupStatus      },
+	{ "Steam_IsVACEnabled"            , Steam_IsVACEnabled             },
+	{ "Steam_GetPublicIP"             , Steam_GetPublicIP              },
+	{ "Steam_IsLoaded"                , Steam_IsLoaded                 },
+	{ "Steam_SetGameDescription"      , Steam_SetGameDescription       },
+	{ "Steam_IsConnected"             , Steam_IsConnected              },
+	{ "Steam_SetRule"                 , Steam_SetRule                  },
+	{ "Steam_ClearRules"              , Steam_ClearRules               },
+	{ "Steam_ForceHeartbeat"          , Steam_ForceHeartbeat           },
+	{ "Steam_GroupIDToCSteamID"       , Steam_GroupIDToCSteamID        },
+	{ "Steam_CSteamIDToGroupID"       , Steam_CSteamIDToGroupID        },
+	{ "Steam_GetCSteamIDForClient"    , Steam_GetCSteamIDForClient     },
+	{ "Steam_RenderedIDToCSteamID"    , Steam_RenderedIDToCSteamID     },
+	{ "Steam_CSteamIDToRenderedID"    , Steam_CSteamIDToRenderedID     },
+	{ "Steam_RequestGroupStatus"      , Steam_RequestGroupStatus       },
+	{ "Steam_RequestGroupStatusAuthID", Steam_RequestGroupStatusAuthID },
 
 	{ NULL, NULL }
 };

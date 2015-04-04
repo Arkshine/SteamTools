@@ -7,6 +7,7 @@
 //
 
 #include "sw_forwards.h"
+#include "steamtools.h"
 #include "utils.h"
 
 SteamToolsGSForwards::SteamToolsGSForwards()
@@ -79,7 +80,7 @@ void SteamToolsGSForwards::OnGroupStatusResult(GSClientGroupStatus_t* pGroup)
 	{
 		if (MF_IsPlayerAuthorized(id) && !MF_IsPlayerBot(id) && !MF_IsPlayerHLTV(id))
 		{
-			if (Utils::RenderedIDToCSteamID(GETPLAYERAUTHID(MF_GetPlayerEdict(id))) == pGroup->m_SteamIDUser)
+			if (g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(MF_GetPlayerEdict(id))) == pGroup->m_SteamIDUser)
 			{
 				break;
 			}

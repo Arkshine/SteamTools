@@ -36,6 +36,10 @@ class SteamTools
 
 	public:
 
+		CSteamID RenderedIDToCSteamID(const char *pRenderedID);
+
+	public:
+
 		SteamToolsGSDetours*  m_Detours;
 		SteamToolsGameServer* m_GameServer;
 		SteamToolsGSForwards* m_Forwards;
