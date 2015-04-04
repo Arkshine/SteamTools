@@ -167,6 +167,16 @@ void SteamToolsGameServer::Think()
 				g_SteamTools->m_Forwards->OnValidateTicket(reinterpret_cast<ValidateAuthTicketResponse_t*>(callbackMsg.m_pubParam));
 				break;
 			}
+			case GSClientDeny_t::k_iCallback:
+			{
+				g_SteamTools->m_Forwards->OnGSClientDeny(reinterpret_cast<GSClientDeny_t*>(callbackMsg.m_pubParam));
+				break;
+			}
+			case GSClientKick_t::k_iCallback:
+			{
+				g_SteamTools->m_Forwards->OnGSClientKick(reinterpret_cast<GSClientKick_t*>(callbackMsg.m_pubParam));
+				break;
+			}
 			case GSClientGroupStatus_t::k_iCallback:
 			{
 				g_SteamTools->m_Forwards->OnGroupStatusResult(reinterpret_cast<GSClientGroupStatus_t*>(callbackMsg.m_pubParam));

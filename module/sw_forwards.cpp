@@ -18,6 +18,7 @@ SteamToolsGSForwards::SteamToolsGSForwards()
 	m_ForwardConnectFailure(0),
 	m_ForwardDisconnected(0),
 	m_ForwardValidateClient(0),
+	m_ForwardInvalidateClient(0),
 	m_ForwardGroupStatusResult(0)
 {
 }
@@ -34,6 +35,7 @@ void SteamToolsGSForwards::RegisterForwards()
 	m_ForwardConnectFailure    = MF_RegisterForward("Steam_SteamServersConnectFailure", ET_IGNORE, FP_CELL, FP_DONE);
 	m_ForwardDisconnected      = MF_RegisterForward("Steam_SteamServersDisconnected"  , ET_IGNORE, FP_CELL, FP_DONE);
 	m_ForwardValidateClient    = MF_RegisterForward("Steam_OnValidateClient"          , ET_IGNORE, FP_CELL, FP_CELL, FP_DONE);
+	m_ForwardInvalidateClient  = MF_RegisterForward("Steam_OnInvalidateClient"        , ET_IGNORE, FP_CELL, FP_CELL, FP_CELL, FP_STRING, FP_DONE);
 	m_ForwardGroupStatusResult = MF_RegisterForward("Steam_GroupStatusResult"         , ET_IGNORE, FP_CELL, FP_CELL, FP_CELL, FP_CELL, FP_DONE);
 }
 
@@ -55,6 +57,16 @@ void SteamToolsGSForwards::OnGSClientApprove(GSClientApprove_t* pApprove)
 void SteamToolsGSForwards::OnValidateTicket(ValidateAuthTicketResponse_t* pTicket)
 {
 	MF_ExecuteForward(m_ForwardValidateClient, pTicket->m_OwnerSteamID.GetAccountID(), pTicket->m_SteamID.GetAccountID());
+}
+
+void SteamToolsGSForwards::OnGSClientDeny(GSClientDeny_t* pDeny)
+{
+	MF_ExecuteForward(m_ForwardInvalidateClient, pDeny->m_SteamID.GetAccountID(), pDeny->m_eDenyReason, false, pDeny->m_pchOptionalText);
+}
+
+void SteamToolsGSForwards::OnGSClientKick(GSClientKick_t* pKick)
+{
+	MF_ExecuteForward(m_ForwardInvalidateClient, pKick->m_SteamID.GetAccountID(), pKick->m_eDenyReason, true, "");
 }
 
 void SteamToolsGSForwards::OnSteamServersConnected(SteamServersConnected_t* pResponse)

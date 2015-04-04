@@ -31,6 +31,8 @@ class SteamToolsGSForwards
 
 		void OnGSClientApprove           (GSClientApprove_t* pApprove);
 		void OnValidateTicket            (ValidateAuthTicketResponse_t* pTicket);
+		void OnGSClientDeny              (GSClientDeny_t* pApprove);
+		void OnGSClientKick              (GSClientKick_t* pApprove);
 		void OnSteamServersConnected     (SteamServersConnected_t* pResponse);
 		void OnSteamServersConnectFailure(SteamServerConnectFailure_t* pResponse);
 		void OnSteamServersDisconnected  (SteamServersDisconnected_t* pResponse);
@@ -44,6 +46,7 @@ class SteamToolsGSForwards
 		int m_ForwardConnectFailure;
 		int m_ForwardDisconnected;
 		int m_ForwardValidateClient;
+		int m_ForwardInvalidateClient;
 		int m_ForwardGroupStatusResult;
 };
 

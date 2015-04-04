@@ -50,9 +50,19 @@ forward Steam_SteamServersDisconnected(EResult:result);
  * Called when a client has been approved to connect to this game server.
  *
  * @param ownerAccountID   Unique account identifier of original owner for game license
- * @apram AccountID        unique account identifier of approved player
+ * @apram accountID        Unique account identifier of approved player
  */
-forward Steam_OnValidateClient(ownerAccountID, AccountID);
+forward Steam_OnValidateClient(ownerAccountID, accountID);
+
+/**
+ * Called when a client has denied or kicked by the game server.
+ *
+ * @param accountID		   Unique account identifier of invalidated player
+ * @apram reason           Reason code, see k_EDeny* constants
+ * @param kicked           Whether game server has requested player to be kicked
+ * @param optionalText     Optional text following only a denied player
+ */
+forward Steam_OnInvalidateClient(accountID, EDenyReason:reason, bool:kicked, const optionalText[]);
 
 /**
  * Called if the master server has requested a restart.
