@@ -72,6 +72,9 @@
     <ClCompile Include="..\..\public\sourcehook\sourcehook.cpp">
       <Filter>SourceHook</Filter>
     </ClCompile>
+    <ClCompile Include="..\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\public\sdk\amxxmodule.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="..\..\public\sourcehook\sourcehook_impl.h">
       <Filter>SourceHook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,8 +18,6 @@ DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPor
 
 	if (result)
 	{
-		g_SteamTools->m_Hooks->AddHooks();
-		g_SteamTools->m_Forwards->OnSteamFullyLoaded();
 		g_SteamTools->OnAPIActivated();
 	}
 
@@ -30,14 +28,12 @@ DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPor
 
 DETOUR_DECL_STATIC0(Hook_SteamGameServer_Shutdown, void)
 {
-	g_SteamTools->m_GameServer->RemoveHooks();
-	g_SteamTools->m_Hooks->RemoveHooks();
-	g_SteamTools->m_Forwards->OnSteamShutdown();
+	g_SteamTools->OnAPIShutdown();
 
 	DETOUR_STATIC_CALL(Hook_SteamGameServer_Shutdown)();
 }
 
-SteamToolsGSDetours::SteamToolsGSDetours()
+SteamToolsGSDetours::SteamToolsGSDetours() : m_InitDetour(nullptr), m_ShutdownDetour(nullptr)
 {
 	ke::AutoPtr<DynamicLibrary> lib;
 
@@ -61,7 +57,7 @@ SteamToolsGSDetours::SteamToolsGSDetours()
 
 		if (!steamclient)
 		{
-			SERVER_PRINT("[SetGameServerAccount] Failed to get steamclient interface\n");
+			SERVER_PRINT("[STEAMTOOLS] Failed to get steamclient interface\n");
 			return;
 		}
 

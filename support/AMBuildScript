@@ -346,6 +346,7 @@ binary.sources = [
   '../module/sw_forwards.cpp',
   '../module/sw_gameserver.cpp',
   '../module/sw_hooks.cpp',
+  '../module/utils.cpp',
 ]
 
 if builder.target_platform == 'windows':

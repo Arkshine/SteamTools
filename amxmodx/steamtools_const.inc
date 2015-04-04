@@ -9,7 +9,7 @@ enum EResult
 	k_EResultOK = 1,                            // success
 	k_EResultFail = 2,                          // generic failure
 	k_EResultNoConnection = 3,                  // no/failed network connection
-//  k_EResultNoConnectionRetry = 4,             // OBSOLETE - removed
+//	k_EResultNoConnectionRetry = 4,             // OBSOLETE - removed
 	k_EResultInvalidPassword = 5,               // password/ticket is invalid
 	k_EResultLoggedInElsewhere = 6,             // same user logged in elsewhere
 	k_EResultInvalidProtocolVer = 7,            // protocol version is incorrect

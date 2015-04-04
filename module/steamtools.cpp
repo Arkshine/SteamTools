@@ -3,7 +3,19 @@
 
 ke::AutoPtr<SteamTools> g_SteamTools;
 
-SteamTools::SteamTools() : m_Callback(nullptr), m_LastThinkTime(0.0f), m_Loaded(false)
+SteamTools::SteamTools() 
+	: 
+	m_Detours   (nullptr),
+	m_GameServer(nullptr),
+	m_Forwards  (nullptr),
+	m_Hooks     (nullptr),
+	m_Natives   (nullptr),
+
+	m_APiActivatedCallback(nullptr), 
+	m_APiShutdownCallback(nullptr),
+
+	m_LastThinkTime(0.0f), 
+	m_Loaded(false)
 {
 }
 
@@ -25,30 +37,29 @@ void SteamTools::Init()
 	m_Natives    = new SteamWorksGSNatives;
 }
 
-void SteamTools::RequestState(void(*func)())
+void SteamTools::RequestState(void(*APIActivatedFunc)(), void(*APIShutdownFunc)())
 {
-	m_Callback = func;
+	m_APiActivatedCallback = APIActivatedFunc;
+	m_APiShutdownCallback  = APIShutdownFunc;
 }
 
 void SteamTools::OnAPIActivated()
 {
 	m_Loaded = true;
 
-	m_Callback();
+	m_APiActivatedCallback();
+}
+
+void SteamTools::OnAPIShutdown()
+{
+	m_Loaded = false;
+
+	m_APiShutdownCallback();
 }
 
 void SteamTools::Think()
 {
-// 	if (m_LastThinkTime > gpGlobals->time)
-// 	{
-// 		RETURN_META(MRES_IGNORED);
-// 	}
-
 	m_GameServer->Think();
-
-//	m_LastThinkTime = gpGlobals->time + 0.05f;
-
-	RETURN_META(MRES_IGNORED);
 }
 
 bool SteamTools::IsSteamToolsLoaded()

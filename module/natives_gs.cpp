@@ -1,21 +1,7 @@
 
 #include "natives_gs.h"
-#include "interfaces.h"
 #include "steamtools.h"
-#include "module.h"
-#include <amxxmodule.h>
-
-inline edict_t* INDEXENT2(int index)
-{
-	if (index >= 1 && index <= gpGlobals->maxClients)
-	{
-		return MF_GetPlayerEdict(index);
-	}
-	else
-	{
-		return g_engfuncs.pfnPEntityOfEntIndex(index);
-	}
-}
+#include "utils.h"
 
 // native bool:Steam_IsVACEnabled();
 static cell AMX_NATIVE_CALL Steam_IsVACEnabled(AMX* amx, cell* params)
@@ -173,7 +159,7 @@ static cell AMX_NATIVE_CALL Steam_GetCSteamIDForClient(AMX* amx, cell* params)
 
 	if (index >= 0)
 	{
-		cSteamID = atocsteamid(GETPLAYERAUTHID(INDEXENT2(index)));
+		cSteamID = Utils::RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(index)));
 	}
 
 	if (!cSteamID.IsValid())
@@ -194,7 +180,7 @@ static cell AMX_NATIVE_CALL Steam_RenderedIDToCSteamID(AMX* amx, cell* params)
 	int length;
 	const char* renderedSteamID = MF_GetAmxString(amx, params[1], 0, &length);
 
-	CSteamID cSteamID = atocsteamid(renderedSteamID);
+	CSteamID cSteamID = Utils::RenderedIDToCSteamID(renderedSteamID);
 
 	if (!cSteamID.IsValid())
 	{
@@ -238,7 +224,7 @@ static cell AMX_NATIVE_CALL Steam_RequestGroupStatus(AMX* amx, cell* params)
 		return 0;
 	}
 
-	CSteamID pSteamID = atocsteamid(GETPLAYERAUTHID(INDEXENT2(params[1])));
+	CSteamID pSteamID = Utils::RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(params[1])));
 
 	if (!pSteamID.IsValid())
 	{

@@ -3,12 +3,22 @@
 #include "module.h"
 #include "steamtools.h"
 
-SteamToolsGameServer::SteamToolsGameServer()
-{
-	m_pClient     = nullptr;
-	m_pGameServer = nullptr;
-	m_pUtils      = nullptr;
-	m_pHTTP       = nullptr;
+SteamToolsGameServer::SteamToolsGameServer() 
+	:
+	m_pClient(nullptr), 
+	m_pGameServer(nullptr),	
+	m_pUtils(nullptr), 
+	m_pHTTP(nullptr),
+
+	m_SteamUserFn(nullptr), 
+	m_SteamPipeFn(nullptr),
+	m_GetCallback(nullptr), 
+	m_FreeLastCallback(nullptr),
+
+	m_ServerHookID(0), 
+	m_UtilsHookID(0), 
+	m_HttpHookID(0)
+{   
 }
 
 SteamToolsGameServer::~SteamToolsGameServer()

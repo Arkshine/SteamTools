@@ -13,7 +13,9 @@ SH_DECL_HOOK0_void(ISteamGameServer, LogOnAnonymous     , SH_NOATTRIB, 0);
 SteamToolsGSHooks::SteamToolsGSHooks() 
 	: 
 	m_ForwardRestartRequested(0), 
-	m_ForwardTokenRequested(0)
+	m_ForwardTokenRequested(0),
+	m_RestartHookID(0),
+	m_logAnonHookID(0)
 {
 	CVAR_REGISTER(&CvarInitSetSteamAccount);
 	CvarSetSteamAccount = CVAR_GET_POINTER(CvarInitSetSteamAccount.name);

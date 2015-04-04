@@ -48,7 +48,8 @@ forward Steam_SteamServersDisconnected(EResult:result);
 forward Steam_OnValidateClient(ownerAccountID, AccountID);
 
 /**
- *  Called if the master server has requested a restart.
+ * Called if the master server has requested a restart.
+ * Return PLUGIN_HANDLED to block request.
  */
 forward Steam_RestartRequested();
 

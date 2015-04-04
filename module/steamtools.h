@@ -23,8 +23,9 @@ class SteamTools
 		void Think();
 		bool IsSteamToolsLoaded();
 
-		void RequestState(void(*func)());
+		void RequestState(void(*APIActivatedFunc)(), void(*APIShutdownFunc)());
 		void OnAPIActivated();
+		void OnAPIShutdown();
 
 	public:
 
@@ -36,7 +37,9 @@ class SteamTools
 
 	private:
 
-		void (*m_Callback)();
+		void (*m_APiActivatedCallback)();
+		void (*m_APiShutdownCallback)();
+
 		float m_LastThinkTime;
 		bool  m_Loaded;
 };
