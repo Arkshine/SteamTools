@@ -299,13 +299,15 @@ static cell AMX_NATIVE_CALL Steam_HasLicenseForApp(AMX* amx, cell* params)
 		return 0;
 	}
 
-	if (g_SteamTools->GetServerAppID() == k_uAppIdInvalid)
+	AppId_t appID = g_SteamTools->m_GameServer->GetUtils()->GetAppID();
+
+	if (appID == k_uAppIdInvalid)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "No App ID could not be retrieved from steam_appid.txt file");
+		MF_LogError(amx, AMX_ERR_NATIVE, "No App ID could not be retrieved");
 		return 0;
 	}
 
-	return pServer->UserHasLicenseForApp(cSteamID, g_SteamTools->GetServerAppID());
+	return pServer->UserHasLicenseForApp(cSteamID, appID);
 }
 
 

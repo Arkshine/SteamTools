@@ -22,9 +22,7 @@ SteamTools::SteamTools()
 	m_APiShutdownCallback(nullptr),
 
 	m_LastThinkTime(0.0f), 
-	m_Loaded(false),
-
-	m_ServerAppID(k_uAppIdInvalid)
+	m_Loaded(false)
 {
 }
 
@@ -74,28 +72,6 @@ void SteamTools::Think()
 bool SteamTools::IsSteamToolsLoaded()
 {
 	return m_Loaded;
-}
-
-void SteamTools::SetServerAppID()
-{
-	char lineRead[6];
-
-	FILE* fp = fopen(MF_BuildPathname("steam_appid.txt"), "rt");
-
-	if (fp)
-	{
-		if (fgets(lineRead, sizeof(lineRead) - 1, fp))
-		{
-			m_ServerAppID = static_cast<AppId_t>(atoi(lineRead));
-		}
-
-		fclose(fp);
-	}
-}
-
-AppId_t SteamTools::GetServerAppID()
-{
-	return m_ServerAppID;
 }
 
 CSteamID SteamTools::RenderedIDToCSteamID(const char* pRenderedID)
