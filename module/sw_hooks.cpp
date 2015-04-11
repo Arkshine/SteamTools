@@ -74,7 +74,7 @@ void SteamToolsGSHooks::LogOnAnonymous(void)
 		SH_RETURN_META(SH_MRES_IGNORED);
 	}
 
-	pGameServer->LogOn(CvarSetSteamAccount->string);
+	pGameServer->LogOn(CvarSetSteamAccount->string, CvarSetSteamAccount->string);
 
 	SH_RETURN_META(SH_MRES_SUPERCEDE);
 }
