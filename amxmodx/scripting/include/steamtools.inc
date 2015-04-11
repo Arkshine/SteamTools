@@ -55,9 +55,9 @@ forward Steam_SteamServersDisconnected(EResult:result);
 forward Steam_OnValidateClient(ownerAccountID, accountID);
 
 /**
- * Called when a client has denied or kicked by the game server.
+ * Called when a client has been denied or kicked by the game server.
  *
- * @param accountID		   Unique account identifier of invalidated player
+ * @param accountID        Unique account identifier of invalidated player
  * @apram reason           Reason code, see k_EDeny* constants
  * @param kicked           Whether game server has requested player to be kicked
  * @param optionalText     Optional text following only a denied player
