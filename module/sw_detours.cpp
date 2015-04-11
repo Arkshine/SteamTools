@@ -59,18 +59,24 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitDetour(nullptr), m_ShutdownDe
 
 	if (lib->IsLoaded())
 	{
-		CreateInterfaceFn iface   = reinterpret_cast<CreateInterfaceFn>(lib->GetSymbol("CreateInterface"));
+		CreateInterfaceFn iface = reinterpret_cast<CreateInterfaceFn>(lib->GetSymbol("CreateInterface"));
 		ISteamClient* steamclient = reinterpret_cast<ISteamClient*>(iface(STEAMCLIENT_INTERFACE_VERSION, nullptr));
 
 		if (!steamclient)
 		{
-			SERVER_PRINT("[STEAMTOOLS] Failed to get steamclient interface\n");
+			SERVER_PRINT(UTIL_VarArgs("[STEAMTOOLS] Failed to get steamclient interface \"%s\"\n", STEAMCLIENT_INTERFACE_VERSION));
 			return;
 		}
 
 		g_SteamTools->m_GameServer->SetSteamClient(steamclient);
 		g_SteamTools->m_GameServer->SetCallbackFuncs(lib->GetSymbol("Steam_BGetCallback"), lib->GetSymbol("Steam_FreeLastCallback"));
 	}
+	else
+	{
+		SERVER_PRINT(UTIL_VarArgs("[STEAMTOOLS] Failed to open \"%s\"\n", steamClientLibrary));
+		return;
+	}
+
 
 	lib = new DynamicLibrary(steamAPILibrary);
 
@@ -83,6 +89,10 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitDetour(nullptr), m_ShutdownDe
 
 		m_InitDetour->EnableDetour();
 		m_ShutdownDetour->EnableDetour();
+	}
+	else
+	{
+		SERVER_PRINT(UTIL_VarArgs("[STEAMTOOLS] Failed to open \"%s\"\n", steamAPILibrary));
 	}
 }
 
