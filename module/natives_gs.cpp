@@ -334,11 +334,11 @@ AMX_NATIVE_INFO GameServerNatives[] =
 	{ NULL, NULL }
 };
 
-SteamWorksGSNatives::SteamWorksGSNatives()
+SteamToolsGSNatives::SteamToolsGSNatives()
 {
 	MF_AddNatives(GameServerNatives);
 }
 
-SteamWorksGSNatives::~SteamWorksGSNatives()
+SteamToolsGSNatives::~SteamToolsGSNatives()
 {
 }

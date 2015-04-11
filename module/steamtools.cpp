@@ -41,7 +41,7 @@ void SteamTools::Init()
 	m_Detours    = new SteamToolsGSDetours;
 	m_Forwards   = new SteamToolsGSForwards;
 	m_Hooks      = new SteamToolsGSHooks;
-	m_Natives    = new SteamWorksGSNatives;
+	m_Natives    = new SteamToolsGSNatives;
 }
 
 void SteamTools::RequestState(void(*APIActivatedFunc)(), void(*APIShutdownFunc)())

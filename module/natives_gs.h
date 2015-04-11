@@ -19,12 +19,12 @@
 #  define atoui64(str) strtoull(str, 0, 10) 
 #endif
 
-class SteamWorksGSNatives
+class SteamToolsGSNatives
 {
 	public:
 
-		SteamWorksGSNatives();
-		~SteamWorksGSNatives();
+		SteamToolsGSNatives();
+		~SteamToolsGSNatives();
 };
 
 #endif // _NATIVES_GS_H_
