@@ -51,8 +51,7 @@ class SteamTools
 		void (*m_APiActivatedCallback)();
 		void (*m_APiShutdownCallback)();
 
-		float   m_LastThinkTime;
-		bool    m_Loaded;
+		bool m_Loaded;
 };
 
 extern ke::AutoPtr<SteamTools> g_SteamTools;

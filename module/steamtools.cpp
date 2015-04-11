@@ -21,7 +21,6 @@ SteamTools::SteamTools()
 	m_APiActivatedCallback(nullptr), 
 	m_APiShutdownCallback(nullptr),
 
-	m_LastThinkTime(0.0f), 
 	m_Loaded(false)
 {
 }
