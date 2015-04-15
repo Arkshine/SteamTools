@@ -22,6 +22,7 @@ class SteamToolsGSHooks
 
 		void LogOnAnonymous();
 		bool WasRestartRequested();
+		bool BSecure();
 
 	public:
 
@@ -37,7 +38,10 @@ class SteamToolsGSHooks
 	private:
 
 		int m_RestartHookID;
-		int m_logAnonHookID;
+		int m_LogAnonHookID;
+		int m_BSecureHookID;
+
+		bool m_ShowGameServerInfo;
 };
 
 #endif // _SW_GAMESERVER_HOOKS_H_
