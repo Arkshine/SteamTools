@@ -112,7 +112,7 @@ class MemoryUtils
 
 #if defined(__linux__) || defined(__APPLE__)
 	private:
-		ke::AVector<LibSymbolTable *> m_SymTables;
+		ke::Vector<LibSymbolTable *> m_SymTables;
 	#if defined(__APPLE__)
 		struct dyld_all_image_infos *m_ImageList;
 		SInt32 m_OSXMajor;
