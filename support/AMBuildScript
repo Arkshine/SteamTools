@@ -143,6 +143,8 @@ class ModuleConfig(object):
       cfg.cxxflags += [
         '-fno-exceptions',
         '-fno-rtti',
+        '-fno-threadsafe-statics',
+        '-Wno-overloaded-virtual',
       ]
     elif cxx.name == 'msvc':
       if builder.options.debug == '1':
