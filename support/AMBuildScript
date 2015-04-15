@@ -335,6 +335,7 @@ binary = Module.MetaModule(builder, 'steamtools')
 
 binary.sources = [
   '../public/sdk/amxxmodule.cpp',
+  '../public/memtools/MemoryUtils.cpp',
   '../public/memtools/CDetour/detours.cpp',
   '../public/memtools/CDetour/asm/asm.c',
   '../public/sourcehook/sourcehook.cpp',

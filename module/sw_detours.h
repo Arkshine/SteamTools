@@ -21,8 +21,9 @@ class SteamToolsGSDetours
 
 	private:
 
-		CDetour* m_InitDetour;
-		CDetour* m_ShutdownDetour;
+		CDetour* m_InitGameServerDetour;
+		CDetour* m_ShutdownGameServerDetour;
+		CDetour* m_InitSteamClientDetour;
 };
 
 #endif // _SW_DETOURS_H_
