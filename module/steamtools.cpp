@@ -63,11 +63,6 @@ void SteamTools::OnAPIShutdown()
 	m_APiShutdownCallback();
 }
 
-void SteamTools::Think()
-{
-	m_GameServer->Think();
-}
-
 bool SteamTools::IsSteamToolsLoaded()
 {
 	return m_Loaded;

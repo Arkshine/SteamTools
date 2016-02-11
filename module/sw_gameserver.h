@@ -10,6 +10,7 @@
 #define _SW_GAMESERVER_H_
 
 #include "interfaces.h"
+#include <CDetour/detours.h>
 
 typedef HSteamUser (*GetUserFn)();
 typedef HSteamPipe (*GetPipeFn)();
@@ -38,15 +39,16 @@ class SteamToolsGameServer
 		void GetUserAndPipe(HSteamUser &hSteamUser, HSteamPipe &hSteamPipe);
 		void SetUserAndPipe(void* userFnPtr, void* pipeFnPtr);
 
-		bool GetCallback     (HSteamPipe hSteamPipe, CallbackMsg_t* pCallbackMsg);
-		void FreeLastCallback(HSteamPipe hSteamPipe);
+		void FreeLastCallback();
 		void SetCallbackFuncs(void* getFn, void* freeFn);
 
 	public:
 
-		void AddHooks();
-		void RemoveHooks();
-		void Think();
+		void AddInterfaceHooks();
+		void RemoveInterfaceHooks();
+
+		void AddCallbackHook();
+		void RemoveCallbackHook();
 
 	private:
 
@@ -66,6 +68,8 @@ class SteamToolsGameServer
 
 		GetCallbackFn      m_GetCallback;
 		FreeLastCallbackFn m_FreeLastCallback;
+
+		CDetour           *m_GetCallbackDetour;
 
 	private:
 

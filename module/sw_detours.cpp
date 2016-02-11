@@ -33,7 +33,7 @@ DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPor
 		g_SteamTools->OnAPIActivated();
 	}
 
-	g_SteamTools->m_GameServer->RemoveHooks();
+	g_SteamTools->m_GameServer->RemoveInterfaceHooks();
 
 	return result;
 }
@@ -46,7 +46,8 @@ DETOUR_DECL_STATIC2(Hook_SteamAPI_Init_Internal, void*, LibraryHandle*, handle, 
 	{
 		g_SteamTools->m_GameServer->SetSteamClient(reinterpret_cast<ISteamClient*>(steamclient));
 		g_SteamTools->m_GameServer->SetCallbackFuncs(g_MemUtils.ResolveSymbol(*handle, "Steam_BGetCallback"), g_MemUtils.ResolveSymbol(*handle, "Steam_FreeLastCallback"));
-		g_SteamTools->m_GameServer->AddHooks();
+		g_SteamTools->m_GameServer->AddInterfaceHooks();
+		g_SteamTools->m_GameServer->AddCallbackHook();
 	}
 	else
 	{
@@ -122,15 +123,18 @@ SteamToolsGSDetours::~SteamToolsGSDetours()
 	if (m_InitGameServerDetour)
 	{
 		m_InitGameServerDetour->Destroy();
+		m_InitGameServerDetour = nullptr;
 	}
 
 	if (m_ShutdownGameServerDetour)
 	{
 		m_ShutdownGameServerDetour->Destroy();
+		m_ShutdownGameServerDetour = nullptr;
 	}
 
 	if (m_InitSteamClientDetour)
 	{
 		m_InitSteamClientDetour->Destroy();
+		m_InitSteamClientDetour = nullptr;
 	}
 }
