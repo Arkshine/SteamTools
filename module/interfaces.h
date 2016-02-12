@@ -6,8 +6,8 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAM_INTERFACES_H_
-#define _STEAM_INTERFACES_H_
+#ifndef _STEAMTOOLS_INTERFACES_H_
+#define _STEAMTOOLS_INTERFACES_H_
 
 #define NO_CSTEAMID_STL
 #define INTERFACEOSW_H
@@ -29,4 +29,4 @@ class ISteamGameServerStats : public ISteamGameServerStats001 {};
 class ISteamHTTP : public ISteamHTTP002 {};
 #define STEAMHTTP_INTERFACE_VERSION STEAMHTTP_INTERFACE_VERSION_002
 
-#endif // _STEAM_INTERFACES_H_
+#endif // _STEAMTOOLS_INTERFACES_H_

@@ -17,7 +17,7 @@ cvar_t CvarInitSetSteamAccount = { "sv_setsteamaccount", "", FCVAR_EXTDLL | FCVA
 cvar_t* CvarSetSteamAccount;
 
 SH_DECL_HOOK0     (ISteamGameServer, WasRestartRequested, SH_NOATTRIB, 0, bool);
-SH_DECL_HOOK0_void(ISteamGameServer, LogOnAnonymous     , SH_NOATTRIB, 0); 
+SH_DECL_HOOK0_void(ISteamGameServer, LogOnAnonymous     , SH_NOATTRIB, 0);
 SH_DECL_HOOK0     (ISteamGameServer, BSecure            , SH_NOATTRIB, 0, bool);
 
 SteamToolsGSHooks::SteamToolsGSHooks()
@@ -55,7 +55,7 @@ void SteamToolsGSHooks::RegisterForwards()
 
 bool SteamToolsGSHooks::WasRestartRequested()
 {
-	bool wasRestartRequested = SH_CALL(g_SteamTools->m_GameServer->GetGameServer(), &ISteamGameServer::WasRestartRequested)();
+	auto wasRestartRequested = SH_CALL(g_SteamTools->m_GameServer->GetGameServer(), &ISteamGameServer::WasRestartRequested)();
 
 	if (wasRestartRequested)
 	{
@@ -67,7 +67,7 @@ bool SteamToolsGSHooks::WasRestartRequested()
 
 void SteamToolsGSHooks::LogOnAnonymous(void)
 {
-	ISteamGameServer *pGameServer = g_SteamTools->m_GameServer->GetGameServer();
+	auto pGameServer = g_SteamTools->m_GameServer->GetGameServer();
 
 	if (!pGameServer)
 	{
@@ -88,7 +88,7 @@ void SteamToolsGSHooks::LogOnAnonymous(void)
 
 bool SteamToolsGSHooks::BSecure()
 {
-	ISteamGameServer* pGameServer = g_SteamTools->m_GameServer->GetGameServer();
+	auto pGameServer = g_SteamTools->m_GameServer->GetGameServer();
 
 	if (m_ShowGameServerInfo)
 	{
@@ -100,14 +100,14 @@ bool SteamToolsGSHooks::BSecure()
 		m_ShowGameServerInfo = false;
 	}
 
-	bool isSecure = SH_CALL(pGameServer, &ISteamGameServer::BSecure)();
+	auto isSecure = SH_CALL(pGameServer, &ISteamGameServer::BSecure)();
 
 	SH_RETURN_META_VALUE(SH_MRES_IGNORED, isSecure);
 }
 
 void SteamToolsGSHooks::AddHooks()
 {
-	ISteamGameServer* pGameServer = g_SteamTools->m_GameServer->GetGameServer();
+	auto pGameServer = g_SteamTools->m_GameServer->GetGameServer();
 
 	m_RestartHookID = SH_ADD_HOOK(ISteamGameServer, WasRestartRequested, pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::WasRestartRequested), false);
 	m_LogAnonHookID = SH_ADD_HOOK(ISteamGameServer, LogOnAnonymous     , pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::LogOnAnonymous)     , false);

@@ -6,8 +6,8 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef _STEAMTOOLS_MODULE_H_
+#define _STEAMTOOLS_MODULE_H_
 
 #include <sourcehook/sourcehook.h>
 #include "interfaces.h"
@@ -22,4 +22,4 @@ void OnSteamAPIActivated();
 void OnSteamAPIShutdown();
 void OnStartFrame();
 
-#endif // _MODULE_H_
+#endif // _STEAMTOOLS_MODULE_H_

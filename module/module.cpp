@@ -36,8 +36,8 @@ void OnSteamAPIActivated()
 {
 	g_SteamTools->m_Forwards->OnSteamFullyLoaded();
 	g_SteamTools->m_Hooks->AddHooks();
-	
-	SERVER_PRINT("[STEAMTOOLS] Loading complete.\n");
+
+	MF_PrintSrvConsole("[STEAMTOOLS] Loading complete.\n");
 }
 
 void OnSteamAPIShutdown()

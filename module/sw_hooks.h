@@ -6,8 +6,8 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _SW_GAMESERVER_HOOKS_H_
-#define _SW_GAMESERVER_HOOKS_H_
+#ifndef _STEAMWORKS_GAMESERVER_HOOKS_H_
+#define _STEAMWORKS_GAMESERVER_HOOKS_H_
 
 #include "interfaces.h"
 
@@ -44,4 +44,4 @@ class SteamToolsGSHooks
 		bool m_ShowGameServerInfo;
 };
 
-#endif // _SW_GAMESERVER_HOOKS_H_
+#endif // _STEAMWORKS_GAMESERVER_HOOKS_H_

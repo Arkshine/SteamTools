@@ -10,15 +10,15 @@
 
 ke::AutoPtr<SteamTools> g_SteamTools;
 
-SteamTools::SteamTools() 
-	: 
+SteamTools::SteamTools()
+	:
 	m_Detours   (nullptr),
 	m_GameServer(nullptr),
 	m_Forwards  (nullptr),
 	m_Hooks     (nullptr),
 	m_Natives   (nullptr),
 
-	m_APiActivatedCallback(nullptr), 
+	m_APiActivatedCallback(nullptr),
 	m_APiShutdownCallback(nullptr),
 
 	m_Loaded(false)
@@ -75,8 +75,8 @@ CSteamID SteamTools::RenderedIDToCSteamID(const char* pRenderedID)
 	steam2ID.m_SteamLocalUserID.Split.High32bits = 0;
 	steam2ID.m_SteamLocalUserID.Split.Low32bits  = 0;
 
-	const char *pchTSteam2ID = pRenderedID;
-	const char *pchOptionalLeadString = "STEAM_";
+	auto pchTSteam2ID = pRenderedID;
+	auto pchOptionalLeadString = "STEAM_";
 
 	if (strncasecmp(pRenderedID, pchOptionalLeadString, strlen(pchOptionalLeadString)) == 0)
 	{
@@ -84,8 +84,7 @@ CSteamID SteamTools::RenderedIDToCSteamID(const char* pRenderedID)
 	}
 
 	char cExtraCharCheck = 0;
-
-	int cFieldConverted = sscanf(pchTSteam2ID, "%hu:%u:%u%c", &steam2ID.m_SteamInstanceID, &steam2ID.m_SteamLocalUserID.Split.High32bits, &steam2ID.m_SteamLocalUserID.Split.Low32bits, &cExtraCharCheck);
+	auto cFieldConverted = sscanf(pchTSteam2ID, "%hu:%u:%u%c", &steam2ID.m_SteamInstanceID, &steam2ID.m_SteamLocalUserID.Split.High32bits, &steam2ID.m_SteamLocalUserID.Split.Low32bits, &cExtraCharCheck);
 
 	if (cExtraCharCheck != 0 || cFieldConverted == EOF || cFieldConverted < 2 || (cFieldConverted < 3 && steam2ID.m_SteamInstanceID != 1))
 	{

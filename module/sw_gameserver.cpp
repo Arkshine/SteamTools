@@ -10,21 +10,21 @@
 #include "module.h"
 #include "steamtools.h"
 
-SteamToolsGameServer::SteamToolsGameServer() 
+SteamToolsGameServer::SteamToolsGameServer()
 	:
-	m_pClient(nullptr), 
-	m_pGameServer(nullptr),	
-	m_pUtils(nullptr), 
+	m_pClient(nullptr),
+	m_pGameServer(nullptr),
+	m_pUtils(nullptr),
 	m_pHTTP(nullptr),
 
-	m_SteamUserFn(nullptr), 
+	m_SteamUserFn(nullptr),
 	m_SteamPipeFn(nullptr),
-	m_GetCallback(nullptr), 
+	m_GetCallback(nullptr),
 	m_FreeLastCallback(nullptr),
 	m_GetCallbackDetour(nullptr),
 
-	m_ServerHookID(0), 
-	m_UtilsHookID(0), 
+	m_ServerHookID(0),
+	m_UtilsHookID(0),
 	m_HttpHookID(0)
 {
 }
@@ -149,7 +149,7 @@ DETOUR_DECL_STATIC3(DetourGetCallback, bool, HSteamPipe, hSteamPipe, CallbackMsg
 		{
 			g_SteamTools->m_Forwards->OnGroupStatusResult(reinterpret_cast<GSClientGroupStatus_t*>(pCallbackMsg->m_pubParam));
 			g_SteamTools->m_GameServer->FreeLastCallback();
-			break;
+			return false;
 		}
 	}
 

@@ -13,7 +13,7 @@
 	#endif
 	#if defined MODULE_USE_VERSIONLIB
 		#include <versionlib.h>
-	#else 
+	#else
 		#include <module_version_auto.h>
 	#endif
 #else

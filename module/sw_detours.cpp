@@ -7,7 +7,6 @@
 //
 
 #include "sw_detours.h"
-#include "module.h"
 #include "steamtools.h"
 
 #include <MemoryUtils.h>
@@ -22,7 +21,7 @@
 
 DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPort, uint16, usGamePort, uint16, usSpectatorPort, uint16, usQueryPort, EServerMode, eServerMode, const char*, pchGameDir, const char*, pchVersionString)
 {
-	bool result = DETOUR_STATIC_CALL(Hook_SteamGameServer_Init)(unIP, usPort, usGamePort, usSpectatorPort, usQueryPort, eServerMode, pchGameDir, pchVersionString);
+	auto result = DETOUR_STATIC_CALL(Hook_SteamGameServer_Init)(unIP, usPort, usGamePort, usSpectatorPort, usQueryPort, eServerMode, pchGameDir, pchVersionString);
 
 	if (result && g_SteamTools->m_GameServer->GetSteamClient())
 	{
@@ -36,7 +35,7 @@ DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPor
 
 DETOUR_DECL_STATIC2(Hook_SteamAPI_Init_Internal, void*, SysType*, handle, bool, checkInstance)
 {
-	void* steamclient = DETOUR_STATIC_CALL(Hook_SteamAPI_Init_Internal)(handle, checkInstance);
+	auto steamclient = DETOUR_STATIC_CALL(Hook_SteamAPI_Init_Internal)(handle, checkInstance);
 
 	if (steamclient)
 	{
@@ -67,17 +66,17 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 {
 #if defined(KE_WINDOWS)
 
-	const char* steamAPILibrary = "steam_api.dll";
+	auto steamAPILibrary = "steam_api.dll";
 	#define STEAMAPI_INIT_INTERNAL "\\x55\\x8B\\x2A\\x81\\x2A\\x2A\\x2A\\x2A\\x2A\\x53\\x56\\x8B"
 
 #elif defined(KE_LINUX)
 
-	const char* steamAPILibrary = "libsteam_api.so";
+	auto steamAPILibrary = "libsteam_api.so";
 	#define STEAMAPI_INIT_INTERNAL "\\x55\\x89\\x2A\\x57\\x56\\x53\\x81\\x2A\\x2A\\x2A\\x2A\\x2A\\xE8\\x2A\\x2A\\x2A\\x2A\\x81\\x2A\\x2A\\x2A\\x2A\\x2A\\x8B\\x2A\\x2A\\x0F"
 
 #elif defined(KE_MACOSX)
 
-	const char* steamAPILibrary = "libsteam_api.dylib";
+	auto steamAPILibrary = "libsteam_api.dylib";
 	#define STEAMAPI_INIT_INTERNAL "_Z22SteamAPI_Init_InternalPPvb"
 
 #endif
@@ -88,13 +87,13 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 	if (lib->valid())
 	{
 	#if defined(KE_MACOSX)
-		void* addressInitSteamclientFn = g_MemUtils.ResolveSymbol(lib->lookup("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
+		auto addressInitSteamclientFn = g_MemUtils.ResolveSymbol(lib->lookup("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
 	#else
-		void* addressInitSteamclientFn = g_MemUtils.DecodeAndFindPattern(lib->lookup("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
+		auto addressInitSteamclientFn = g_MemUtils.DecodeAndFindPattern(lib->lookup("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
 	#endif
-		
+
 		if (!addressInitSteamclientFn)
-		{	
+		{
 			MF_PrintSrvConsole("[STEAMTOOLS] Could not get address of function which inits ISteamClient interface\n");
 			return;
 		}

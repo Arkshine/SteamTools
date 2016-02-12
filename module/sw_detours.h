@@ -6,8 +6,8 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _SW_DETOURS_H_
-#define _SW_DETOURS_H_
+#ifndef _STEAMWORKS_DETOURS_H_
+#define _STEAMWORKS_DETOURS_H_
 
 #include "interfaces.h"
 #include "CDetour/detours.h"
@@ -26,4 +26,4 @@ class SteamToolsGSDetours
 		CDetour* m_InitSteamClientDetour;
 };
 
-#endif // _SW_DETOURS_H_
+#endif // _STEAMWORKS_DETOURS_H_
