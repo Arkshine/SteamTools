@@ -27,7 +27,6 @@ class SteamTools
 	public:
 
 		void Init();
-		void Think();
 		bool IsSteamToolsLoaded();
 
 		void RequestState(void(*APIActivatedFunc)(), void(*APIShutdownFunc)());

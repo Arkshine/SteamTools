@@ -32,8 +32,6 @@ void OnPluginsLoaded()
 
 void OnSteamAPIActivated()
 {
-	g_pFunctionTable_Post->pfnStartFrame = OnStartFrame;
-
 	g_SteamTools->m_Forwards->OnSteamFullyLoaded();
 	g_SteamTools->m_Hooks->AddHooks();
 	
@@ -42,15 +40,6 @@ void OnSteamAPIActivated()
 
 void OnSteamAPIShutdown()
 {
-	g_pFunctionTable_Post->pfnStartFrame = nullptr;
-
 	g_SteamTools->m_Forwards->OnSteamShutdown();
 	g_SteamTools->m_Hooks->RemoveHooks();
-}
-
-void OnStartFrame()
-{
-	g_SteamTools->Think();
-
-	RETURN_META(MRES_IGNORED);
 }

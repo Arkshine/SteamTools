@@ -21,6 +21,7 @@ SteamToolsGameServer::SteamToolsGameServer()
 	m_SteamPipeFn(nullptr),
 	m_GetCallback(nullptr), 
 	m_FreeLastCallback(nullptr),
+	m_GetCallbackDetour(nullptr),
 
 	m_ServerHookID(0), 
 	m_UtilsHookID(0), 
@@ -28,9 +29,16 @@ SteamToolsGameServer::SteamToolsGameServer()
 {
 }
 
+
 SteamToolsGameServer::~SteamToolsGameServer()
 {
+	RemoveCallbackHook();
+}
 
+
+void SteamToolsGameServer::SetSteamClient(ISteamClient* client)
+{
+	m_pClient = client;
 }
 
 ISteamClient* SteamToolsGameServer::GetSteamClient()
@@ -52,6 +60,7 @@ ISteamHTTP* SteamToolsGameServer::GetHTTP()
 {
 	return m_pHTTP;
 }
+
 
 SH_DECL_HOOK3(ISteamClient, GetISteamGameServer, SH_NOATTRIB, 0, ISteamGameServer*, HSteamUser, HSteamPipe, const char*);
 SH_DECL_HOOK2(ISteamClient, GetISteamUtils     , SH_NOATTRIB, 0, ISteamUtils*     , HSteamPipe, const char*);
@@ -75,23 +84,100 @@ ISteamHTTP* SteamToolsGameServer::GetISteamHTTP(HSteamUser hSteamUser, HSteamPip
 	SH_RETURN_META_VALUE(SH_MRES_SUPERCEDE, m_pHTTP);
 }
 
-void SteamToolsGameServer::SetSteamClient(ISteamClient* client)
-{
-	m_pClient = client;
-}
-
-void SteamToolsGameServer::AddHooks()
+void SteamToolsGameServer::AddInterfaceHooks()
 {
 	m_ServerHookID = SH_ADD_HOOK(ISteamClient, GetISteamGameServer, m_pClient, SH_MEMBER(this, &SteamToolsGameServer::GetISteamGameServer), false);
 	m_UtilsHookID  = SH_ADD_HOOK(ISteamClient, GetISteamUtils     , m_pClient, SH_MEMBER(this, &SteamToolsGameServer::GetISteamUtils)     , false);
 	m_HttpHookID   = SH_ADD_HOOK(ISteamClient, GetISteamHTTP      , m_pClient, SH_MEMBER(this, &SteamToolsGameServer::GetISteamHTTP)      , false);
 }
 
-void SteamToolsGameServer::RemoveHooks()
+void SteamToolsGameServer::RemoveInterfaceHooks()
 {
 	SH_REMOVE_HOOK_ID(m_ServerHookID);
 	SH_REMOVE_HOOK_ID(m_UtilsHookID);
 	SH_REMOVE_HOOK_ID(m_HttpHookID);
+}
+
+
+DETOUR_DECL_STATIC3(DetourGetCallback, bool, HSteamPipe, hSteamPipe, CallbackMsg_t *, pCallbackMsg, HSteamCall*, phSteamCall)
+{
+	auto result = DETOUR_STATIC_CALL(DetourGetCallback)(hSteamPipe, pCallbackMsg, phSteamCall);
+
+	if (!result)
+	{
+		return false;
+	}
+
+	switch (pCallbackMsg->m_iCallback)
+	{
+		case SteamServersConnected_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnSteamServersConnected(reinterpret_cast<SteamServersConnected_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case SteamServerConnectFailure_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnSteamServersConnectFailure(reinterpret_cast<SteamServerConnectFailure_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case SteamServersDisconnected_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnSteamServersDisconnected(reinterpret_cast<SteamServersDisconnected_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case GSClientApprove_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnGSClientApprove(reinterpret_cast<GSClientApprove_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case ValidateAuthTicketResponse_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnValidateTicket(reinterpret_cast<ValidateAuthTicketResponse_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case GSClientDeny_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnGSClientDeny(reinterpret_cast<GSClientDeny_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case GSClientKick_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnGSClientKick(reinterpret_cast<GSClientKick_t*>(pCallbackMsg->m_pubParam));
+			break;
+		}
+		case GSClientGroupStatus_t::k_iCallback:
+		{
+			g_SteamTools->m_Forwards->OnGroupStatusResult(reinterpret_cast<GSClientGroupStatus_t*>(pCallbackMsg->m_pubParam));
+			g_SteamTools->m_GameServer->FreeLastCallback();
+			break;
+		}
+	}
+
+	return true;
+}
+
+
+void SteamToolsGameServer::AddCallbackHook()
+{
+	m_GetCallbackDetour = DETOUR_CREATE_STATIC_FIXED(DetourGetCallback, reinterpret_cast<void*>(m_GetCallback));
+
+	if (m_GetCallbackDetour)
+	{
+		m_GetCallbackDetour->EnableDetour();
+	}
+	else
+	{
+		SERVER_PRINT("[STEAMTOOLS] Failled to detour GetCallback\n");
+	}
+}
+
+void SteamToolsGameServer::RemoveCallbackHook()
+{
+	if (m_GetCallbackDetour)
+	{
+		m_GetCallbackDetour->Destroy();
+		m_GetCallbackDetour = nullptr;
+	}
 }
 
 void SteamToolsGameServer::GetUserAndPipe(HSteamUser& hSteamUser, HSteamPipe& hSteamPipe)
@@ -106,87 +192,13 @@ void SteamToolsGameServer::SetUserAndPipe(void* user, void* pipe)
 	m_SteamPipeFn = reinterpret_cast<GetPipeFn>(pipe);
 }
 
-bool SteamToolsGameServer::GetCallback(HSteamPipe hSteamPipe, CallbackMsg_t* pCallbackMsg)
+void SteamToolsGameServer::FreeLastCallback()
 {
-	return m_GetCallback(hSteamPipe, pCallbackMsg);
-}
-
-void SteamToolsGameServer::FreeLastCallback(HSteamPipe hSteamPipe)
-{
-	m_FreeLastCallback(hSteamPipe);
+	m_FreeLastCallback(m_SteamPipeFn());
 }
 
 void SteamToolsGameServer::SetCallbackFuncs(void* getFn, void* freeFn)
 {
 	m_GetCallback      = reinterpret_cast<GetCallbackFn>(getFn);
 	m_FreeLastCallback = reinterpret_cast<FreeLastCallbackFn>(freeFn);
-}
-
-void SteamToolsGameServer::Think()
-{
-	if (!g_SteamTools->m_GameServer->GetSteamClient())
-	{
-		return;
-	}
-
-	static int lastCallback = -1;
-
-	CallbackMsg_t callbackMsg;
-
-	if (GetCallback(m_SteamPipeFn(), &callbackMsg))
-	{
-		if (lastCallback == callbackMsg.m_iCallback)
-		{
-			return;
-		}
-
-		switch (lastCallback = callbackMsg.m_iCallback)
-		{
-			case SteamServersConnected_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnSteamServersConnected(reinterpret_cast<SteamServersConnected_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case SteamServerConnectFailure_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnSteamServersConnectFailure(reinterpret_cast<SteamServerConnectFailure_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case SteamServersDisconnected_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnSteamServersDisconnected(reinterpret_cast<SteamServersDisconnected_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case GSClientApprove_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnGSClientApprove(reinterpret_cast<GSClientApprove_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case ValidateAuthTicketResponse_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnValidateTicket(reinterpret_cast<ValidateAuthTicketResponse_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case GSClientDeny_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnGSClientDeny(reinterpret_cast<GSClientDeny_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case GSClientKick_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnGSClientKick(reinterpret_cast<GSClientKick_t*>(callbackMsg.m_pubParam));
-				break;
-			}
-			case GSClientGroupStatus_t::k_iCallback:
-			{
-				g_SteamTools->m_Forwards->OnGroupStatusResult(reinterpret_cast<GSClientGroupStatus_t*>(callbackMsg.m_pubParam));
-				FreeLastCallback(m_SteamPipeFn());
-				break;
-			}
-		}
-	}
-	else if (lastCallback != -1)
-	{
-		lastCallback = -1;
-	}
 }
