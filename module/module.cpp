@@ -14,7 +14,7 @@ SourceHook::CSourceHookImpl g_SourceHook;
 SourceHook::ISourceHook *g_SHPtr = &g_SourceHook;
 int g_PLID = 0;
 
-extern DLL_FUNCTIONS* g_pFunctionTable_Post;
+HLTypeConversion TypeConversion;
 
 void OnAmxxAttach()
 {
@@ -26,6 +26,8 @@ void OnAmxxAttach()
 
 void OnPluginsLoaded()
 {
+	TypeConversion.init();
+
 	g_SteamTools->m_Forwards->RegisterForwards();
 	g_SteamTools->m_Hooks->RegisterForwards();
 }

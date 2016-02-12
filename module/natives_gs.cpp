@@ -6,6 +6,7 @@
 // For full license details, see LICENSE file.
 //
 
+#include "module.h"
 #include "natives_gs.h"
 #include "steamtools.h"
 #include <amtl/am-string.h>
@@ -179,7 +180,7 @@ static cell AMX_NATIVE_CALL Steam_GetCSteamIDForClient(AMX* amx, cell* params)
 
 	if (index >= 0)
 	{
-		cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(index)));
+		cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(TypeConversion.id_to_edict(index)));
 	}
 
 	if (!cSteamID.IsValid())
@@ -244,7 +245,7 @@ static cell AMX_NATIVE_CALL Steam_RequestGroupStatus(AMX* amx, cell* params)
 		return 0;
 	}
 
-	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(params[1])));
+	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(TypeConversion.id_to_edict(params[1])));
 	CSteamID cGroupID = CSteamID(params[2], k_EUniversePublic, k_EAccountTypeClan);
 
 	if (!cSteamID.IsValid())
@@ -291,7 +292,7 @@ static cell AMX_NATIVE_CALL Steam_HasLicenseForApp(AMX* amx, cell* params)
 		return 0;
 	}
 
-	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(Utils::INDEXENT2(index)));
+	CSteamID cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(TypeConversion.id_to_edict(index)));
 
 	if (!cSteamID.IsValid())
 	{

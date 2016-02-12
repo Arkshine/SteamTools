@@ -8,7 +8,6 @@
 
 #include "sw_forwards.h"
 #include "steamtools.h"
-#include "utils.h"
 
 SteamToolsGSForwards::SteamToolsGSForwards()
 	:

@@ -23,7 +23,6 @@
     <ClCompile Include="..\sw_forwards.cpp" />
     <ClCompile Include="..\sw_gameserver.cpp" />
     <ClCompile Include="..\sw_hooks.cpp" />
-    <ClCompile Include="..\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\public\memtools\CDetour\asm\asm.h" />
@@ -43,7 +42,6 @@
     <ClInclude Include="..\sw_forwards.h" />
     <ClInclude Include="..\sw_gameserver.h" />
     <ClInclude Include="..\sw_hooks.h" />
-    <ClInclude Include="..\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\amxmodx\steamtools.inc" />

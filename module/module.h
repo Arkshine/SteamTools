@@ -11,9 +11,12 @@
 
 #include <sourcehook/sourcehook.h>
 #include "interfaces.h"
+#include "HLTypeConversion.h"
 
 extern SourceHook::ISourceHook *g_SHPtr;
 extern int g_PLID;
+
+extern HLTypeConversion TypeConversion;;
 
 void OnSteamAPIActivated();
 void OnSteamAPIShutdown();
