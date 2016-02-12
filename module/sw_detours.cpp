@@ -9,19 +9,15 @@
 #include "sw_detours.h"
 #include "module.h"
 #include "steamtools.h"
+
 #include <MemoryUtils.h>
 #include <CDetour/detours.h>
+#include <amtl/os/am-shared-library.h>
 
-#if defined(WIN32)
-
-	#include "Win32Library.h"
-	typedef HMODULE LibraryHandle;
-
-#elif defined(LINUX) || defined(OSX)
-
-	#include "POSIXLibrary.h"
-	typedef void*   LibraryHandle;
-
+#if defined(KE_WINDOWS)
+	typedef HMODULE SysType;
+#else
+	typedef void* SysType;
 #endif
 
 DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPort, uint16, usGamePort, uint16, usSpectatorPort, uint16, usQueryPort, EServerMode, eServerMode, const char*, pchGameDir, const char*, pchVersionString)
@@ -38,14 +34,16 @@ DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPor
 	return result;
 }
 
-DETOUR_DECL_STATIC2(Hook_SteamAPI_Init_Internal, void*, LibraryHandle*, handle, bool, checkInstance)
+DETOUR_DECL_STATIC2(Hook_SteamAPI_Init_Internal, void*, SysType*, handle, bool, checkInstance)
 {
 	void* steamclient = DETOUR_STATIC_CALL(Hook_SteamAPI_Init_Internal)(handle, checkInstance);
 
 	if (steamclient)
 	{
+		auto library = ke::SharedLib(*handle);
+
 		g_SteamTools->m_GameServer->SetSteamClient(reinterpret_cast<ISteamClient*>(steamclient));
-		g_SteamTools->m_GameServer->SetCallbackFuncs(g_MemUtils.ResolveSymbol(*handle, "Steam_BGetCallback"), g_MemUtils.ResolveSymbol(*handle, "Steam_FreeLastCallback"));
+		g_SteamTools->m_GameServer->SetCallbackFuncs(library.lookup("Steam_BGetCallback"), library.lookup("Steam_FreeLastCallback"));
 		g_SteamTools->m_GameServer->AddInterfaceHooks();
 		g_SteamTools->m_GameServer->AddCallbackHook();
 	}
@@ -67,33 +65,32 @@ DETOUR_DECL_STATIC0(Hook_SteamGameServer_Shutdown, void)
 
 SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_ShutdownGameServerDetour(nullptr), m_InitSteamClientDetour(nullptr)
 {
-	ke::AutoPtr<DynamicLibrary> lib;
-
-#if defined(WIN32)
+#if defined(KE_WINDOWS)
 
 	const char* steamAPILibrary = "steam_api.dll";
 	#define STEAMAPI_INIT_INTERNAL "\\x55\\x8B\\x2A\\x81\\x2A\\x2A\\x2A\\x2A\\x2A\\x53\\x56\\x8B"
 
-#elif defined(LINUX)
+#elif defined(KE_LINUX)
 
 	const char* steamAPILibrary = "libsteam_api.so";
 	#define STEAMAPI_INIT_INTERNAL "\\x55\\x89\\x2A\\x57\\x56\\x53\\x81\\x2A\\x2A\\x2A\\x2A\\x2A\\xE8\\x2A\\x2A\\x2A\\x2A\\x81\\x2A\\x2A\\x2A\\x2A\\x2A\\x8B\\x2A\\x2A\\x0F"
 
-#elif defined(OSX)
+#elif defined(KE_MACOSX)
 
 	const char* steamAPILibrary = "libsteam_api.dylib";
 	#define STEAMAPI_INIT_INTERNAL "_Z22SteamAPI_Init_InternalPPvb"
 
 #endif
 
-	lib = new DynamicLibrary(steamAPILibrary);
+	char error[255] = "unknown";
+	auto lib = ke::SharedLib::Open(steamAPILibrary, error, sizeof(error));
 
-	if (lib->IsLoaded())
+	if (lib->valid())
 	{
-	#if defined(OSX)
-		void* addressInitSteamclientFn = g_MemUtils.ResolveSymbol(lib->GetSymbol("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
+	#if defined(KE_MACOSX)
+		void* addressInitSteamclientFn = g_MemUtils.ResolveSymbol(lib->lookup("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
 	#else
-		void* addressInitSteamclientFn = g_MemUtils.DecodeAndFindPattern(lib->GetSymbol("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
+		void* addressInitSteamclientFn = g_MemUtils.DecodeAndFindPattern(lib->lookup("SteamGameServer_Init"), STEAMAPI_INIT_INTERNAL);
 	#endif
 		
 		if (!addressInitSteamclientFn)
@@ -102,11 +99,11 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 			return;
 		}
 
-		g_SteamTools->m_GameServer->SetUserAndPipe(lib->GetSymbol("SteamGameServer_GetHSteamUser"), lib->GetSymbol("SteamGameServer_GetHSteamPipe"));
+		g_SteamTools->m_GameServer->SetUserAndPipe(lib->lookup("SteamGameServer_GetHSteamUser"), lib->lookup("SteamGameServer_GetHSteamPipe"));
 
 		m_InitSteamClientDetour    = DETOUR_CREATE_STATIC_FIXED(Hook_SteamAPI_Init_Internal  , addressInitSteamclientFn);
-		m_InitGameServerDetour     = DETOUR_CREATE_STATIC_FIXED(Hook_SteamGameServer_Init    , lib->GetSymbol("SteamGameServer_Init"));
-		m_ShutdownGameServerDetour = DETOUR_CREATE_STATIC_FIXED(Hook_SteamGameServer_Shutdown, lib->GetSymbol("SteamGameServer_Shutdown"));
+		m_InitGameServerDetour     = DETOUR_CREATE_STATIC_FIXED(Hook_SteamGameServer_Init    , lib->lookup("SteamGameServer_Init"));
+		m_ShutdownGameServerDetour = DETOUR_CREATE_STATIC_FIXED(Hook_SteamGameServer_Shutdown, lib->lookup("SteamGameServer_Shutdown"));
 
 		m_InitGameServerDetour->EnableDetour();
 		m_ShutdownGameServerDetour->EnableDetour();
@@ -114,7 +111,7 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 	}
 	else
 	{
-		SERVER_PRINT(UTIL_VarArgs("[STEAMTOOLS] Failed to open \"%s\"\n", steamAPILibrary));
+		SERVER_PRINT(UTIL_VarArgs("[STEAMTOOLS] Failed to open \"%s\". Error: %s\n", steamAPILibrary, error));
 	}
 }
 

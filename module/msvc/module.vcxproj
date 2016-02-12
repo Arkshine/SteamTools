@@ -99,7 +99,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_USING_V120_SDK71_;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_ITERATOR_DEBUG_LEVEL=0;_CRT_NONSTDC_NO_DEPRECATE;HAVE_STDINT_H;_DEBUG;_WINDOWS;_USRDLL;WIN32PROJECT1_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl\include;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BrowseInformation>true</BrowseInformation>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_ITERATOR_DEBUG_LEVEL=0;_CRT_NONSTDC_NO_DEPRECATE;HAVE_STDINT_H;NDEBUG;_WINDOWS;_USRDLL;HTTP_DOWNLOAD_MANAGER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl\include;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
       <WholeProgramOptimization>false</WholeProgramOptimization>

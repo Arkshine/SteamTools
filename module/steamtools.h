@@ -15,7 +15,7 @@
 #include "sw_hooks.h"
 #include "natives_gs.h"
 
-#include <am-utility.h>
+#include <amtl/am-utility.h>
 
 class SteamTools
 {

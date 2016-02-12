@@ -8,7 +8,7 @@
 
 #include "natives_gs.h"
 #include "steamtools.h"
-#include "utils.h"
+#include <amtl/am-string.h>
 
 // native bool:Steam_IsVACEnabled();
 static cell AMX_NATIVE_CALL Steam_IsVACEnabled(AMX* amx, cell* params)
@@ -148,7 +148,7 @@ static cell AMX_NATIVE_CALL Steam_ForceHeartbeat(AMX* amx, cell* params)
 static cell AMX_NATIVE_CALL Steam_GroupIDToCSteamID(AMX* amx, cell* params)
 {
 	char CSteamIDString[128];
-	UTIL_Format(CSteamIDString, params[3], "%llu", CSteamID(params[1], k_EUniversePublic, k_EAccountTypeClan).ConvertToUint64());
+	ke::SafeSprintf(CSteamIDString, sizeof(CSteamIDString), "%llu", CSteamID(params[1], k_EUniversePublic, k_EAccountTypeClan).ConvertToUint64());
 
 	return MF_SetAmxString(amx, params[2], CSteamIDString, params[3]);
 }
@@ -189,7 +189,7 @@ static cell AMX_NATIVE_CALL Steam_GetCSteamIDForClient(AMX* amx, cell* params)
 	}
 
 	char cSteamIDString[128];
-	UTIL_Format(cSteamIDString, params[3], "%llu", cSteamID.ConvertToUint64());
+	ke::SafeSprintf(cSteamIDString, sizeof(cSteamIDString), "%llu", cSteamID.ConvertToUint64());
 
 	return MF_SetAmxString(amx, params[2], cSteamIDString, params[3]);
 }
@@ -209,7 +209,7 @@ static cell AMX_NATIVE_CALL Steam_RenderedIDToCSteamID(AMX* amx, cell* params)
 	}
 
 	char cSteamIDString[128];
-	UTIL_Format(cSteamIDString, params[3], "%llu", cSteamID.ConvertToUint64());
+	ke::SafeSprintf(cSteamIDString, sizeof(cSteamIDString), "%llu", cSteamID.ConvertToUint64());
 
 	return MF_SetAmxString(amx, params[2], cSteamIDString, params[3]);
 }
@@ -229,7 +229,7 @@ static cell AMX_NATIVE_CALL Steam_CSteamIDToRenderedID(AMX* amx, cell* params)
 	}
 
 	char renderedSteamIDString[128];
-	UTIL_Format(renderedSteamIDString, params[3], "%s", cSteamID.Render());
+	ke::SafeSprintf(renderedSteamIDString, sizeof(renderedSteamIDString), "%s", cSteamID.Render());
 
 	return MF_SetAmxString(amx, params[2], renderedSteamIDString, params[3]);
 }

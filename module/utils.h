@@ -15,7 +15,6 @@
 namespace Utils
 {
 	edict_t* INDEXENT2(int index);
-	bool IsPathFile(const char* path);
 };
 
 #endif // _UTILS_H_
