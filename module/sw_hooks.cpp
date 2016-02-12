@@ -94,8 +94,8 @@ bool SteamToolsGSHooks::BSecure()
 	{
 		uint32_t publicIP = pGameServer->GetPublicIP();
 
-		SERVER_PRINT(UTIL_VarArgs("   Public IP is %i.%i.%i.%i\n", publicIP >> 24 & 255, publicIP >> 16 & 255, publicIP >> 8 & 255, publicIP & 255));
-		SERVER_PRINT(UTIL_VarArgs("   Assigned persistent gameserver Steam %s (%llu)\n", pGameServer->GetSteamID().SteamRender(), pGameServer->GetSteamID().ConvertToUint64()));
+		MF_PrintSrvConsole("   Public IP is %i.%i.%i.%i\n", publicIP >> 24 & 255, publicIP >> 16 & 255, publicIP >> 8 & 255, publicIP & 255);
+		MF_PrintSrvConsole("   Assigned persistent gameserver Steam %s (%llu)\n", pGameServer->GetSteamID().SteamRender(), pGameServer->GetSteamID().ConvertToUint64());
 
 		m_ShowGameServerInfo = false;
 	}

@@ -49,7 +49,7 @@ DETOUR_DECL_STATIC2(Hook_SteamAPI_Init_Internal, void*, SysType*, handle, bool, 
 	}
 	else
 	{
-		SERVER_PRINT("[STEAMTOOLS] Failed to get steamclient interface\n");
+		MF_PrintSrvConsole("[STEAMTOOLS] Failed to get steamclient interface\n");
 	}
 
 	return steamclient;
@@ -95,7 +95,7 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 		
 		if (!addressInitSteamclientFn)
 		{	
-			SERVER_PRINT("[STEAMTOOLS] Could not get address of function which inits ISteamClient interface\n");
+			MF_PrintSrvConsole("[STEAMTOOLS] Could not get address of function which inits ISteamClient interface\n");
 			return;
 		}
 
@@ -111,7 +111,7 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 	}
 	else
 	{
-		SERVER_PRINT(UTIL_VarArgs("[STEAMTOOLS] Failed to open \"%s\". Error: %s\n", steamAPILibrary, error));
+		MF_PrintSrvConsole("[STEAMTOOLS] Failed to open \"%s\". Error: %s\n", steamAPILibrary, error);
 	}
 }
 

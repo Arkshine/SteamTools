@@ -167,7 +167,7 @@ void SteamToolsGameServer::AddCallbackHook()
 	}
 	else
 	{
-		SERVER_PRINT("[STEAMTOOLS] Failled to detour GetCallback\n");
+		MF_PrintSrvConsole("[STEAMTOOLS] Failled to detour GetCallback\n");
 	}
 }
 
