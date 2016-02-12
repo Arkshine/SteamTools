@@ -44,8 +44,8 @@
     <ClInclude Include="..\sw_hooks.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\amxmodx\steamtools.inc" />
-    <None Include="..\..\amxmodx\steamtools_const.inc" />
+    <None Include="..\..\amxmodx\scripting\include\steamtools.inc" />
+    <None Include="..\..\amxmodx\scripting\include\steamtools_const.inc" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\version.rc">

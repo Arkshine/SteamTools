@@ -49,6 +49,10 @@ forward Steam_SteamServersDisconnected(EResult:result);
 /**
  * Called when a client has been approved to connect to this game server.
  *
+ * @note This is called only when a client needs to be validated, which means
+ *       the forward will be called on first client's connection or retry, but not
+ *       after a change map or restart.
+ *
  * @param ownerAccountID   Unique account identifier of original owner for game license
  * @apram accountID        Unique account identifier of approved player
  */
@@ -220,6 +224,16 @@ native Steam_GroupIDToCSteamID(groupID, steamID[], maxlength);
  * @error                   Invalid Steam ID
  */
 native Steam_CSteamIDToGroupID(const steamID[]);
+
+/**
+ * Converts an account ID to an user ID.
+ *
+ * @param accountID         Account ID
+ *
+ * @return                  Player's index, 0 otherwise
+ * @error                   Invalid account ID
+ */
+native Steam_AccountIDToPlayerID(accountID);
 
 /**
  * Gets a client's Steam ID structure.

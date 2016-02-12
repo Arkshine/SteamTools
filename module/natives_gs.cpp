@@ -170,6 +170,31 @@ static cell AMX_NATIVE_CALL Steam_CSteamIDToGroupID(AMX* amx, cell* params)
 	return steamID.GetAccountID();
 }
 
+// native Steam_AccountIDToPlayerID(accountID);
+static cell AMX_NATIVE_CALL Steam_AccountIDToPlayerID(AMX* amx, cell* params)
+{
+	auto cSteamID = CSteamID(params[1], k_EUniversePublic, k_EAccountTypeIndividual);
+
+	if (!cSteamID.IsValid())
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%d is not a valid account ID", params[1]);
+		return 0;
+	}
+
+	for (auto id = 1; id <= gpGlobals->maxClients; ++id)
+	{
+		if (MF_IsPlayerAuthorized(id) && !MF_IsPlayerBot(id) && !MF_IsPlayerHLTV(id))
+		{
+			if (g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(TypeConversion.id_to_edict(id))) == cSteamID)
+			{
+				return id;
+			}
+		}
+	}
+
+	return 0;
+}
+
 // native Steam_GetCSteamIDForClient(client, steamID[], maxlength);
 static cell AMX_NATIVE_CALL Steam_GetCSteamIDForClient(AMX* amx, cell* params)
 {
@@ -323,6 +348,7 @@ AMX_NATIVE_INFO GameServerNatives[] =
 	{ "Steam_ForceHeartbeat"          , Steam_ForceHeartbeat           },
 	{ "Steam_GroupIDToCSteamID"       , Steam_GroupIDToCSteamID        },
 	{ "Steam_CSteamIDToGroupID"       , Steam_CSteamIDToGroupID        },
+	{ "Steam_AccountIDToPlayerID"     , Steam_AccountIDToPlayerID      },
 	{ "Steam_GetCSteamIDForClient"    , Steam_GetCSteamIDForClient     },
 	{ "Steam_RenderedIDToCSteamID"    , Steam_RenderedIDToCSteamID     },
 	{ "Steam_CSteamIDToRenderedID"    , Steam_CSteamIDToRenderedID     },

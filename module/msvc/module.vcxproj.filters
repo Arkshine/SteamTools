@@ -127,10 +127,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\amxmodx\steamtools.inc">
+    <None Include="..\..\amxmodx\scripting\include\steamtools.inc">
       <Filter>Pawn Includes</Filter>
     </None>
-    <None Include="..\..\amxmodx\steamtools_const.inc">
+    <None Include="..\..\amxmodx\scripting\include\steamtools_const.inc">
       <Filter>Pawn Includes</Filter>
     </None>
   </ItemGroup>
