@@ -24,9 +24,9 @@ extern "C" void SteamAPIWarningMessageHook(int hpipe, const char *message)
 	MF_Log("SteamAPIWarning: %s", message);
 }
 
-DETOUR_DECL_STATIC8(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPort, uint16, usGamePort, uint16, usSpectatorPort, uint16, usQueryPort, EServerMode, eServerMode, const char*, pchGameDir, const char*, pchVersionString)
+DETOUR_DECL_STATIC6(Hook_SteamGameServer_Init, bool, uint32, unIP, uint16, usPort, uint16, usGamePort, uint16, usQueryPort, EServerMode, eServerMode, const char*, pchVersionString)
 {
-	auto result = DETOUR_STATIC_CALL(Hook_SteamGameServer_Init)(unIP, usPort, usGamePort, usSpectatorPort, usQueryPort, eServerMode, pchGameDir, pchVersionString);
+	auto result = DETOUR_STATIC_CALL(Hook_SteamGameServer_Init)(unIP, usPort, usGamePort, usQueryPort, eServerMode, pchVersionString);
 
 	if (result && g_SteamTools->m_GameServer->GetSteamClient())
 	{
