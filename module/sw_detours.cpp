@@ -11,7 +11,6 @@
 
 #include <MemoryUtils.h>
 #include <CDetour/detours.h>
-#include <amtl/os/am-shared-library.h>
 
 #if defined(KE_WINDOWS)
 	typedef HMODULE SysType;
@@ -45,7 +44,7 @@ DETOUR_DECL_STATIC2(Hook_SteamAPI_Init_Internal, void*, SysType*, handle, bool, 
 
 	if (steamclient)
 	{
-		auto library = ke::SharedLib(*handle);
+		auto library = SimpleLib(*handle);
 
 		g_SteamTools->m_GameServer->SetSteamClient(reinterpret_cast<ISteamClient*>(steamclient));
 		g_SteamTools->m_GameServer->SetCallbackFuncs(library.lookup("Steam_BGetCallback"), library.lookup("Steam_FreeLastCallback"));
