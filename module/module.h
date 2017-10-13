@@ -20,6 +20,5 @@ extern HLTypeConversion TypeConversion;;
 
 void OnSteamAPIActivated();
 void OnSteamAPIShutdown();
-void OnStartFrame();
 
 #endif // _STEAMTOOLS_MODULE_H_
