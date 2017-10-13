@@ -197,6 +197,7 @@ private:
 	void *detour_address;
 	/* Address of the allocated trampoline function */
 	void *detour_trampoline;
+	size_t detour_trampolineSize;
 	/* Address of the callback handler */
 	void *detour_callback;
 	/* The function pointer used to call our trampoline */
