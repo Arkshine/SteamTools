@@ -11,6 +11,9 @@
 
 #include "interfaces.h"
 
+constexpr size_t k_cbMaxGameServerMapName = 32u; // The maximum size (in UTF-8 bytes, including the null terminator) supported for game server map names which is set with ISteamGameServer::SetMapName.
+constexpr size_t k_cbMaxGameServerName    = 64u; // The maximum size (in UTF-8 bytes, including the null terminator) supported for game server names which is set with ISteamGameServer::SetServerName.
+
 class SteamToolsGSHooks
 {
 	public:
@@ -24,11 +27,17 @@ class SteamToolsGSHooks
 		bool WasRestartRequested();
 		bool BSecure();
 
+		void SetMapName(const char *name);
+		void SetServerName(const char *name);
+
 	public:
 
 		void RegisterForwards();
 		void AddHooks();
 		void RemoveHooks();
+
+		void SetCustomMapName(const char *name);
+		void SetCustomServerName(const char *name);
 
 	private:
 
@@ -41,7 +50,15 @@ class SteamToolsGSHooks
 		int m_LogAnonHookID;
 		int m_BSecureHookID;
 
+		int m_SetMapNameHookID;
+		int m_SetServerNameHookID;
+
+	private:
+
 		bool m_ShowGameServerInfo;
+
+		char m_CustomMapName[k_cbMaxGameServerMapName] = "";
+		char m_CustomServerName[k_cbMaxGameServerName] = "";
 };
 
 #endif // _STEAMWORKS_GAMESERVER_HOOKS_H_

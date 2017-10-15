@@ -19,6 +19,8 @@ cvar_t* CvarSetSteamAccount;
 SH_DECL_HOOK0     (ISteamGameServer, WasRestartRequested, SH_NOATTRIB, 0, bool);
 SH_DECL_HOOK0_void(ISteamGameServer, LogOnAnonymous     , SH_NOATTRIB, 0);
 SH_DECL_HOOK0     (ISteamGameServer, BSecure            , SH_NOATTRIB, 0, bool);
+SH_DECL_HOOK1_void(ISteamGameServer, SetMapName         , SH_NOATTRIB, 0, const char*);
+SH_DECL_HOOK1_void(ISteamGameServer, SetServerName      , SH_NOATTRIB, 0, const char*);
 
 SteamToolsGSHooks::SteamToolsGSHooks()
 	:
@@ -27,6 +29,8 @@ SteamToolsGSHooks::SteamToolsGSHooks()
 	m_RestartHookID(0),
 	m_LogAnonHookID(0),
 	m_BSecureHookID(0),
+	m_SetMapNameHookID(0),
+	m_SetServerNameHookID(0),
 	m_ShowGameServerInfo(false)
 {
 	CVAR_REGISTER(&CvarInitSetSteamAccount);
@@ -105,6 +109,30 @@ bool SteamToolsGSHooks::BSecure()
 	SH_RETURN_META_VALUE(SH_MRES_IGNORED, isSecure);
 }
 
+
+void SteamToolsGSHooks::SetCustomMapName(const char *name)
+{
+	ke::SafeStrcpy(m_CustomMapName, sizeof(m_CustomMapName), name);
+}
+
+void SteamToolsGSHooks::SetCustomServerName(const char *name)
+{
+	ke::SafeStrcpy(m_CustomServerName, sizeof(m_CustomServerName), name);
+}
+
+void SteamToolsGSHooks::SetMapName(const char *name)
+{
+	SH_CALL(g_SteamTools->m_GameServer->GetGameServer(), &ISteamGameServer::SetMapName)(*m_CustomMapName ? m_CustomMapName : name);
+	SH_RETURN_META(SH_MRES_SUPERCEDE);
+}
+
+void SteamToolsGSHooks::SetServerName(const char *name)
+{
+	SH_CALL(g_SteamTools->m_GameServer->GetGameServer(), &ISteamGameServer::SetServerName)(*m_CustomServerName ? m_CustomServerName : name);
+	SH_RETURN_META(SH_MRES_SUPERCEDE);
+}
+
+
 void SteamToolsGSHooks::AddHooks()
 {
 	auto pGameServer = g_SteamTools->m_GameServer->GetGameServer();
@@ -112,6 +140,9 @@ void SteamToolsGSHooks::AddHooks()
 	m_RestartHookID = SH_ADD_HOOK(ISteamGameServer, WasRestartRequested, pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::WasRestartRequested), false);
 	m_LogAnonHookID = SH_ADD_HOOK(ISteamGameServer, LogOnAnonymous     , pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::LogOnAnonymous)     , false);
 	m_BSecureHookID = SH_ADD_HOOK(ISteamGameServer, BSecure            , pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::BSecure)            , false);
+
+	m_SetMapNameHookID    = SH_ADD_HOOK(ISteamGameServer, SetMapName   , pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::SetMapName)   , false);
+	m_SetServerNameHookID = SH_ADD_HOOK(ISteamGameServer, SetServerName, pGameServer, SH_MEMBER(this, &SteamToolsGSHooks::SetServerName), false);
 }
 
 void SteamToolsGSHooks::RemoveHooks()
@@ -119,4 +150,7 @@ void SteamToolsGSHooks::RemoveHooks()
 	SH_REMOVE_HOOK_ID(m_RestartHookID);
 	SH_REMOVE_HOOK_ID(m_LogAnonHookID);
 	SH_REMOVE_HOOK_ID(m_BSecureHookID);
+
+	SH_REMOVE_HOOK_ID(m_SetMapNameHookID);
+	SH_REMOVE_HOOK_ID(m_SetServerNameHookID);
 }

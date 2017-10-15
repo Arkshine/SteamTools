@@ -164,6 +164,22 @@ native bool:Steam_IsConnected();
 native Steam_SetGameDescription(const description[]);
 
 /**
+ * Sets name of map to report in the server browser.
+ *
+ * @param name			Map name to set
+ * @noreturn
+ */
+native Steam_SetMapName(const name[]);
+
+/**
+ * Sets the name of server to report in the server browser.
+ *
+ * @param name			 Server name to set
+ * @noreturn
+ */
+native Steam_SetServerName(const name[]);
+
+/**
  * Sets an entry in the server's list of rules.
  *
  * @note This list is used to build the response to the A2S_RULES query

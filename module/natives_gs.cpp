@@ -82,6 +82,42 @@ static cell AMX_NATIVE_CALL Steam_SetGameDescription(AMX* amx, cell* params)
 	return 1;
 }
 
+// native Steam_SetMapName(const name[]);
+static cell AMX_NATIVE_CALL Steam_SetMapName(AMX* amx, cell* params)
+{
+	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+
+	if (!pServer)
+	{
+		return 0;
+	}
+
+	int length;
+	auto name = MF_GetAmxString(amx, params[1], 0, &length);
+
+	g_SteamTools->m_Hooks->SetCustomMapName(name);
+
+	return 1;
+}
+
+// native Steam_SetServerName(const name[]);
+static cell AMX_NATIVE_CALL Steam_SetServerName(AMX* amx, cell* params)
+{
+	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+
+	if (!pServer)
+	{
+		return 0;
+	}
+
+	int length;
+	auto name = MF_GetAmxString(amx, params[1], 0, &length);
+
+	g_SteamTools->m_Hooks->SetCustomServerName(name);
+
+	return 1;
+}
+
 // native bool:Steam_IsConnected();
 static cell AMX_NATIVE_CALL Steam_IsConnected(AMX* amx, cell* params)
 {
@@ -342,6 +378,8 @@ AMX_NATIVE_INFO GameServerNatives[] =
 	{ "Steam_GetPublicIPCell"         , Steam_GetPublicIPCell          },
 	{ "Steam_IsLoaded"                , Steam_IsLoaded                 },
 	{ "Steam_SetGameDescription"      , Steam_SetGameDescription       },
+	{ "Steam_SetMapName"              , Steam_SetMapName               },
+	{ "Steam_SetServerName"           , Steam_SetServerName            },
 	{ "Steam_IsConnected"             , Steam_IsConnected              },
 	{ "Steam_SetRule"                 , Steam_SetRule                  },
 	{ "Steam_ClearRules"              , Steam_ClearRules               },

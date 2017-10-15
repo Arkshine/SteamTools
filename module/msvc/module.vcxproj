@@ -57,6 +57,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Win32Project1</RootNamespace>
     <ProjectName>SteamTools</ProjectName>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -96,12 +97,12 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl;..\..\public\memtools;..\..\public\sourcehook;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BrowseInformation>true</BrowseInformation>
       <CompileAs>CompileAsCpp</CompileAs>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <PreprocessorDefinitions>_USING_V110_SDK71_;WIN32;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;HAVE_STDINT_H;STEAMTOOLS_EXPORTS;_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;AMX_NOPROPLIST;PAWN_CELL_SIZE=32;_USING_V110_SDK71_;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_ITERATOR_DEBUG_LEVEL=0;HAVE_STDINT_H;STEAMTOOLS_EXPORTS;_DEBUG</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +118,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl;..\..\public\memtools;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\;..\includes;..\..\..\public;..\..\public;..\..\public\sdk;..\..\public\amtl;..\..\public\memtools;..\..\public\sourcehook;..\..\public\open-steamworks\Open Steamworks;$(METAMOD)\metamod;$(HLSDK)\common;$(HLSDK)\engine;$(HLSDK)\dlls;$(HLSDK)\pm_shared;$(HLSDK)\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
       <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -125,7 +126,7 @@
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <CompileAs>CompileAsCpp</CompileAs>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>_USING_V110_SDK71_;WIN32;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;HAVE_STDINT_H;STEAMTOOLS_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;AMX_NOPROPLIST;PAWN_CELL_SIZE=32;_USING_V110_SDK71_;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_ITERATOR_DEBUG_LEVEL=0;HAVE_STDINT_H;STEAMTOOLS_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
