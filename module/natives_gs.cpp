@@ -11,30 +11,37 @@
 #include "steamtools.h"
 #include <amtl/am-string.h>
 
+#define CHECK_STEAMTOOLS()                                                    \
+	if (!g_SteamTools->IsSteamToolsLoaded())                                  \
+	{                                                                         \
+		MF_LogError(amx, AMX_ERR_NATIVE, "SteamTools API is not ready yet."); \
+		return 0;                                                             \
+	}
+
+static ISteamGameServer* GameServer()
+{
+	return g_SteamTools->m_GameServer->GetGameServer();
+}
+
+static ISteamUtils* GameUtils()
+{
+	return g_SteamTools->m_GameServer->GetUtils();
+}
+
 // native bool:Steam_IsVACEnabled();
 static cell AMX_NATIVE_CALL Steam_IsVACEnabled(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+	CHECK_STEAMTOOLS();
 
-	if (!pServer)
-	{
-		return 0;
-	}
-
-	return pServer->BSecure() ? 1 : 0;
+	return GameServer()->BSecure() ? 1 : 0;
 }
 
 // native Steam_GetPublicIP(octets[4]);
 static cell AMX_NATIVE_CALL Steam_GetPublicIP(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+	CHECK_STEAMTOOLS();
 
-	if (!pServer)
-	{
-		return 0;
-	}
-
-	auto ipaddr = pServer->GetPublicIP();
+	auto ipaddr = GameServer()->GetPublicIP();
 	auto addr = MF_GetAmxAddr(amx, params[1]);
 
 	for (char iter = 3; iter > -1; --iter)
@@ -48,14 +55,9 @@ static cell AMX_NATIVE_CALL Steam_GetPublicIP(AMX* amx, cell* params)
 // native Steam_GetPublicIPCell();
 static cell AMX_NATIVE_CALL Steam_GetPublicIPCell(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+	CHECK_STEAMTOOLS();
 
-	if (!pServer)
-	{
-		return 0;
-	}
-
-	return pServer->GetPublicIP();
+	return GameServer()->GetPublicIP();
 }
 
 // native bool:Steam_IsLoaded();
@@ -67,17 +69,12 @@ static cell AMX_NATIVE_CALL Steam_IsLoaded(AMX* amx, cell* params)
 // native Steam_SetGameDescription(const description[]);
 static cell AMX_NATIVE_CALL Steam_SetGameDescription(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	int length;
 	const char* description = MF_GetAmxString(amx, params[1], 0, &length);
 
-	pServer->SetGameDescription(description);
+	GameServer()->SetGameDescription(description);
 
 	return 1;
 }
@@ -85,12 +82,7 @@ static cell AMX_NATIVE_CALL Steam_SetGameDescription(AMX* amx, cell* params)
 // native Steam_SetMapName(const name[]);
 static cell AMX_NATIVE_CALL Steam_SetMapName(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	int length;
 	auto name = MF_GetAmxString(amx, params[1], 0, &length);
@@ -103,12 +95,7 @@ static cell AMX_NATIVE_CALL Steam_SetMapName(AMX* amx, cell* params)
 // native Steam_SetServerName(const name[]);
 static cell AMX_NATIVE_CALL Steam_SetServerName(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	int length;
 	auto name = MF_GetAmxString(amx, params[1], 0, &length);
@@ -121,31 +108,21 @@ static cell AMX_NATIVE_CALL Steam_SetServerName(AMX* amx, cell* params)
 // native bool:Steam_IsConnected();
 static cell AMX_NATIVE_CALL Steam_IsConnected(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+	CHECK_STEAMTOOLS();
 
-	if (!pServer)
-	{
-		return 0;
-	}
-
-	return pServer->BLoggedOn() ? 1 : 0;
+	return GameServer()->BLoggedOn() ? 1 : 0;
 }
 
 // native Steam_SetRule(const key[], const value[]);
 static cell AMX_NATIVE_CALL Steam_SetRule(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	int length;
 	const char* key   = MF_GetAmxString(amx, params[1], 0, &length);
 	const char* value = MF_GetAmxString(amx, params[2], 1, &length);
 
-	pServer->SetKeyValue(key, value);
+	GameServer()->SetKeyValue(key, value);
 
 	return 1;
 }
@@ -153,14 +130,9 @@ static cell AMX_NATIVE_CALL Steam_SetRule(AMX* amx, cell* params)
 // native Steam_ClearRules();
 static cell AMX_NATIVE_CALL Steam_ClearRules(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+	CHECK_STEAMTOOLS();
 
-	if (!pServer)
-	{
-		return 0;
-	}
-
-	pServer->ClearAllKeyValues();
+	GameServer()->ClearAllKeyValues();
 
 	return 1;
 }
@@ -168,14 +140,9 @@ static cell AMX_NATIVE_CALL Steam_ClearRules(AMX* amx, cell* params)
 // native Steam_ForceHeartbeat();
 static cell AMX_NATIVE_CALL Steam_ForceHeartbeat(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
+	CHECK_STEAMTOOLS();
 
-	if (!pServer)
-	{
-		return 0;
-	}
-
-	pServer->ForceHeartbeat();
+	GameServer()->ForceHeartbeat();
 
 	return 1;
 }
@@ -298,12 +265,7 @@ static cell AMX_NATIVE_CALL Steam_CSteamIDToRenderedID(AMX* amx, cell* params)
 // native bool:Steam_RequestGroupStatus(client, groupAccountID);
 static cell AMX_NATIVE_CALL Steam_RequestGroupStatus(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	auto cSteamID = g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(TypeConversion.id_to_edict(params[1])));
 	auto cGroupID = CSteamID(params[2], k_EUniversePublic, k_EAccountTypeClan);
@@ -314,34 +276,24 @@ static cell AMX_NATIVE_CALL Steam_RequestGroupStatus(AMX* amx, cell* params)
 		return 0;
 	}
 
-	return pServer->RequestUserGroupStatus(cSteamID, cGroupID);
+	return GameServer()->RequestUserGroupStatus(cSteamID, cGroupID);
 }
 
 // native bool:Steam_RequestGroupStatusAuthID(authID, groupAccountID);
 static cell AMX_NATIVE_CALL Steam_RequestGroupStatusAuthID(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	auto cSteamID = CSteamID(params[1], k_EUniversePublic, k_EAccountTypeIndividual);
 	auto cGroupID = CSteamID(params[2], k_EUniversePublic, k_EAccountTypeClan);
 
-	return pServer->RequestUserGroupStatus(cSteamID, cGroupID);
+	return GameServer()->RequestUserGroupStatus(cSteamID, cGroupID);
 }
 
 // native EUserHasLicenseForAppResult:Steam_HasLicenseForApp(client);
 static cell AMX_NATIVE_CALL Steam_HasLicenseForApp(AMX* amx, cell* params)
 {
-	auto pServer = g_SteamTools->m_GameServer->GetGameServer();
-
-	if (!pServer)
-	{
-		return 0;
-	}
+	CHECK_STEAMTOOLS();
 
 	auto index = params[1];
 
@@ -359,7 +311,7 @@ static cell AMX_NATIVE_CALL Steam_HasLicenseForApp(AMX* amx, cell* params)
 		return 0;
 	}
 
-	auto appID = g_SteamTools->m_GameServer->GetUtils()->GetAppID();
+	auto appID = GameUtils()->GetAppID();
 
 	if (appID == k_uAppIdInvalid)
 	{
@@ -367,7 +319,7 @@ static cell AMX_NATIVE_CALL Steam_HasLicenseForApp(AMX* amx, cell* params)
 		return 0;
 	}
 
-	return pServer->UserHasLicenseForApp(cSteamID, appID);
+	return GameServer()->UserHasLicenseForApp(cSteamID, appID);
 }
 
 
