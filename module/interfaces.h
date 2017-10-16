@@ -6,13 +6,16 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMTOOLS_INTERFACES_H_
-#define _STEAMTOOLS_INTERFACES_H_
+#pragma once
 
 #define NO_CSTEAMID_STL
 #define INTERFACEOSW_H
 
 #include <Steamworks.h>
+
+constexpr size_t k_cbMaxGameServerMapName         = 32u; // The maximum size (in UTF-8 bytes, including the null terminator) supported for game server map names which is set with ISteamGameServer::SetMapName.
+constexpr size_t k_cbMaxGameServerName            = 64u; // The maximum size (in UTF-8 bytes, including the null terminator) supported for game server names which is set with ISteamGameServer::SetServerName.
+constexpr size_t k_cbMaxGameServerGameDescription = 64;  //	The maximum size (in UTF-8 bytes, including the null terminator) supported for the game server mod description which is set with ISteamGameServer::SetGameDescription.
 
 class ISteamClient : public ISteamClient012 {};
 #define STEAMCLIENT_INTERFACE_VERSION STEAMCLIENT_INTERFACE_VERSION_012
@@ -29,4 +32,4 @@ class ISteamGameServerStats : public ISteamGameServerStats001 {};
 class ISteamHTTP : public ISteamHTTP002 {};
 #define STEAMHTTP_INTERFACE_VERSION STEAMHTTP_INTERFACE_VERSION_002
 
-#endif // _STEAMTOOLS_INTERFACES_H_
+

@@ -6,8 +6,7 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMWORKS_GAMESERVER_H_
-#define _STEAMWORKS_GAMESERVER_H_
+#pragma once
 
 #include "interfaces.h"
 #include <CDetour/detours.h>
@@ -26,7 +25,7 @@ class SteamToolsGameServer
 		~SteamToolsGameServer();
 
 	public:
-		
+
 		ISteamClient     *GetSteamClient();
 		ISteamGameServer *GetGameServer();
 		ISteamUtils      *GetUtils();
@@ -77,5 +76,3 @@ class SteamToolsGameServer
 		int m_UtilsHookID;
 		int m_HttpHookID;
 };
-
-#endif // _STEAMWORKS_GAMESERVER_H_

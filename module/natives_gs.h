@@ -6,11 +6,9 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMTOOLS_NATIVES_GS_H_
-#define _STEAMTOOLS_NATIVES_GS_H_
-
+#pragma once
 #if defined(WIN32)
-#  if defined(_MSC_VER )
+#  if defined(_MSC_VER)
 #    define atoui64(str) _strtoui64(str, 0, 10)
 #  else
 #    define atoui64(str) strtoul(str, 0, 10)
@@ -26,5 +24,3 @@ class SteamToolsGSNatives
 		SteamToolsGSNatives();
 		~SteamToolsGSNatives();
 };
-
-#endif // _STEAMTOOLS_NATIVES_GS_H_

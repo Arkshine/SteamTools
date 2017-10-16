@@ -6,8 +6,7 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMWORKS_FORWARDS_H_
-#define _STEAMWORKS_FORWARDS_H_
+#pragma once
 
 #include "interfaces.h"
 
@@ -49,5 +48,3 @@ class SteamToolsGSForwards
 		int m_ForwardInvalidateClient;
 		int m_ForwardGroupStatusResult;
 };
-
-#endif // _STEAMWORKS_FORWARDS_H_

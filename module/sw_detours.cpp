@@ -12,12 +12,6 @@
 #include <MemoryUtils.h>
 #include <CDetour/detours.h>
 
-#if defined(KE_WINDOWS)
-	typedef HMODULE SysType;
-#else
-	typedef void* SysType;
-#endif
-
 extern "C" void SteamAPIWarningMessageHook(int hpipe, const char *message)
 {
 	MF_Log("SteamAPIWarning: %s", message);

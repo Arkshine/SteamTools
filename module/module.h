@@ -6,8 +6,7 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMTOOLS_MODULE_H_
-#define _STEAMTOOLS_MODULE_H_
+#pragma once
 
 #include <sourcehook/sourcehook.h>
 #include "interfaces.h"
@@ -16,9 +15,8 @@
 extern SourceHook::ISourceHook *g_SHPtr;
 extern int g_PLID;
 
-extern HLTypeConversion TypeConversion;;
+extern HLTypeConversion TypeConversion;
 
 void OnSteamAPIActivated();
 void OnSteamAPIShutdown();
 
-#endif // _STEAMTOOLS_MODULE_H_

@@ -6,8 +6,7 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMWORKS_DETOURS_H_
-#define _STEAMWORKS_DETOURS_H_
+#pragma once
 
 #include "interfaces.h"
 #include "CDetour/detours.h"
@@ -27,14 +26,14 @@ class SteamToolsGSDetours
 		CDetour* m_InitSteamClientDetour;
 };
 
+#if defined(KE_WINDOWS)
+	typedef HMODULE SysType;
+#else
+	typedef void* SysType;
+#endif
+
 class SimpleLib
 {
-	#if defined(KE_WINDOWS)
-		typedef HMODULE SysType;
-	#else
-		typedef void* SysType;
-	#endif
-
 	public:
 
 		explicit SimpleLib(const SysType& lib) : lib_(lib)
@@ -42,16 +41,14 @@ class SimpleLib
 
 		void* lookup(const char* symbol)
 		{
-	#if defined(KE_WINDOWS)
+		#if defined(KE_WINDOWS)
 			return reinterpret_cast<void*>(GetProcAddress(lib_, symbol));
-	#else
+		#else
 			return dlsym(lib_, symbol);
-	#endif
+		#endif
 		}
 
 	private:
 
 		SysType lib_;
 };
-
-#endif // _STEAMWORKS_DETOURS_H_

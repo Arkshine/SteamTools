@@ -6,13 +6,9 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMWORKS_GAMESERVER_HOOKS_H_
-#define _STEAMWORKS_GAMESERVER_HOOKS_H_
+#pragma once
 
 #include "interfaces.h"
-
-constexpr size_t k_cbMaxGameServerMapName = 32u; // The maximum size (in UTF-8 bytes, including the null terminator) supported for game server map names which is set with ISteamGameServer::SetMapName.
-constexpr size_t k_cbMaxGameServerName    = 64u; // The maximum size (in UTF-8 bytes, including the null terminator) supported for game server names which is set with ISteamGameServer::SetServerName.
 
 class SteamToolsGSHooks
 {
@@ -21,7 +17,7 @@ class SteamToolsGSHooks
 		SteamToolsGSHooks();
 		~SteamToolsGSHooks();
 
-	public:
+	public: // Virtual functions hooked
 
 		void LogOnAnonymous();
 		bool WasRestartRequested();
@@ -30,7 +26,7 @@ class SteamToolsGSHooks
 		void SetMapName(const char *name);
 		void SetServerName(const char *name);
 
-	public:
+	public: // Logic
 
 		void RegisterForwards();
 		void AddHooks();
@@ -39,12 +35,12 @@ class SteamToolsGSHooks
 		void SetCustomMapName(const char *name);
 		void SetCustomServerName(const char *name);
 
-	private:
+	private: // AMX Mod X Forward id
 
 		int m_ForwardRestartRequested;
 		int m_ForwardTokenRequested;
 
-	private:
+	private: // Virtual Hook Id
 
 		int m_RestartHookID;
 		int m_LogAnonHookID;
@@ -53,12 +49,9 @@ class SteamToolsGSHooks
 		int m_SetMapNameHookID;
 		int m_SetServerNameHookID;
 
-	private:
-
-		bool m_ShowGameServerInfo;
+	private: // Custom Server State
 
 		char m_CustomMapName[k_cbMaxGameServerMapName] = "";
 		char m_CustomServerName[k_cbMaxGameServerName] = "";
 };
 
-#endif // _STEAMWORKS_GAMESERVER_HOOKS_H_

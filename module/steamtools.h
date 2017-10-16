@@ -6,8 +6,7 @@
 // For full license details, see LICENSE file.
 //
 
-#ifndef _STEAMTOOLS_H_
-#define _STEAMTOOLS_H_
+#pragma once
 
 #include "sw_detours.h"
 #include "sw_gameserver.h"
@@ -55,5 +54,3 @@ class SteamTools
 };
 
 extern ke::AutoPtr<SteamTools> g_SteamTools;
-
-#endif // _STEAMTOOLS_H_
