@@ -17,13 +17,10 @@
 #include <amtl/am-autoptr.h>
 #include <amtl/am-utility.h>
 
+using namespace ke;
+
 class SteamTools
 {
-	public:
-
-		SteamTools();
-		~SteamTools();
-
 	public:
 
 		void Init();
@@ -36,21 +33,22 @@ class SteamTools
 	public:
 
 		CSteamID RenderedIDToCSteamID(const char *pRenderedID);
+		int FindGameClient(CSteamID &target);
 
 	public:
 
-		SteamToolsGSDetours*  m_Detours;
-		SteamToolsGameServer* m_GameServer;
-		SteamToolsGSForwards* m_Forwards;
-		SteamToolsGSHooks*    m_Hooks;
-		SteamToolsGSNatives*  m_Natives;
+		UniquePtr<SteamToolsGSDetours>  m_Detours;
+		UniquePtr<SteamToolsGameServer> m_GameServer;
+		UniquePtr<SteamToolsGSForwards> m_Forwards;
+		UniquePtr<SteamToolsGSHooks>    m_Hooks;
+		UniquePtr<SteamToolsGSNatives>  m_Natives;
 
 	private:
 
-		void (*m_APiActivatedCallback)();
-		void (*m_APiShutdownCallback)();
+		void (*m_APiActivatedCallback)() = nullptr;
+		void (*m_APiShutdownCallback)()  = nullptr;
 
-		bool m_Loaded;
+		bool m_Loaded = false;
 };
 
-extern ke::AutoPtr<SteamTools> g_SteamTools;
+extern UniquePtr<SteamTools> g_SteamTools;

@@ -35,6 +35,11 @@
 //ISourcePawnEngine *CDetourManager::spengine = NULL;
 //IGameConfig *CDetourManager::gameconf = NULL;
 
+CDetour::~CDetour()
+{
+	DeleteDetour();
+}
+
 void CDetourManager::Init(/*ISourcePawnEngine *spengine, IGameConfig *gameconf*/)
 {
 	//CDetourManager::spengine = spengine;

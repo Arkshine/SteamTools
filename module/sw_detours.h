@@ -11,26 +11,28 @@
 #include "interfaces.h"
 #include "CDetour/detours.h"
 #include <amtl/os/am-shared-library.h>
+#include <amtl/am-autoptr.h>
 
-class SteamToolsGSDetours
-{
-	public:
-
-		SteamToolsGSDetours();
-		~SteamToolsGSDetours();
-
-	private:
-
-		CDetour* m_InitGameServerDetour;
-		CDetour* m_ShutdownGameServerDetour;
-		CDetour* m_InitSteamClientDetour;
-};
+using namespace ke;
 
 #if defined(KE_WINDOWS)
 	typedef HMODULE SysType;
 #else
 	typedef void* SysType;
 #endif
+
+class SteamToolsGSDetours
+{
+	public:
+
+		SteamToolsGSDetours();
+
+	private:
+
+		AutoPtr<CDetour> m_InitGameServerDetour;
+		AutoPtr<CDetour> m_ShutdownGameServerDetour;
+		AutoPtr<CDetour> m_InitSteamClientDetour;
+};
 
 class SimpleLib
 {

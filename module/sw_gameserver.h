@@ -10,6 +10,9 @@
 
 #include "interfaces.h"
 #include <CDetour/detours.h>
+#include <amtl/am-autoptr.h>
+
+using namespace ke;
 
 typedef HSteamUser (*GetUserFn)();
 typedef HSteamPipe (*GetPipeFn)();
@@ -19,11 +22,6 @@ typedef void (*FreeLastCallbackFn) (HSteamPipe hSteamPipe);
 
 class SteamToolsGameServer
 {
-	public:
-
-		SteamToolsGameServer();
-		~SteamToolsGameServer();
-
 	public:
 
 		ISteamClient     *GetSteamClient();
@@ -36,10 +34,10 @@ class SteamToolsGameServer
 		void SetSteamClient(ISteamClient* client);
 
 		void GetUserAndPipe(HSteamUser &hSteamUser, HSteamPipe &hSteamPipe);
-		void SetUserAndPipe(void* userFnPtr, void* pipeFnPtr);
+		void SetUserAndPipe(void *userFnPtr, void *pipeFnPtr);
 
 		void FreeLastCallback();
-		void SetCallbackFuncs(void* getFn, void* freeFn);
+		void SetCallbackFuncs(void *getFn, void *freeFn);
 
 	public:
 
@@ -47,32 +45,30 @@ class SteamToolsGameServer
 		void RemoveInterfaceHooks();
 
 		void AddCallbackHook();
-		void RemoveCallbackHook();
 
 	private:
 
-		ISteamGameServer* GetISteamGameServer(HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char* pchVersion);
-		ISteamUtils*      GetISteamUtils     (HSteamPipe hSteamPipe, const char* pchVersion);
-		ISteamHTTP*       GetISteamHTTP      (HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char* pchVersion);
+		ISteamGameServer*GetISteamGameServer(HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
+		ISteamUtils     *GetISteamUtils     (HSteamPipe hSteamPipe, const char *pchVersion);
+		ISteamHTTP      *GetISteamHTTP      (HSteamUser hSteamUser, HSteamPipe hSteamPipe, const char *pchVersion);
 
 	private:
 
-		ISteamClient      *m_pClient;
-		ISteamGameServer  *m_pGameServer;
-		ISteamUtils       *m_pUtils;
-		ISteamHTTP        *m_pHTTP;
+		ISteamClient      *m_pClient     = nullptr;
+		ISteamGameServer  *m_pGameServer = nullptr;
+		ISteamUtils       *m_pUtils      = nullptr;
+		ISteamHTTP        *m_pHTTP       = nullptr;
 
-		GetUserFn          m_SteamUserFn;
-		GetPipeFn          m_SteamPipeFn;
+		GetUserFn          m_SteamUserFn = nullptr;
+		GetPipeFn          m_SteamPipeFn = nullptr;
 
-		GetCallbackFn      m_GetCallback;
-		FreeLastCallbackFn m_FreeLastCallback;
+		GetCallbackFn      m_GetCallback      = nullptr;
+		FreeLastCallbackFn m_FreeLastCallback = nullptr;
 
-		CDetour           *m_GetCallbackDetour;
-
+		AutoPtr<CDetour>   m_GetCallbackDetour;
 	private:
 
-		int m_ServerHookID;
-		int m_UtilsHookID;
-		int m_HttpHookID;
+		int m_ServerHookID = 0;
+		int m_UtilsHookID  = 0;
+		int m_HttpHookID   = 0;
 };

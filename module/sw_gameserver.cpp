@@ -10,32 +10,6 @@
 #include "module.h"
 #include "steamtools.h"
 
-SteamToolsGameServer::SteamToolsGameServer()
-	:
-	m_pClient(nullptr),
-	m_pGameServer(nullptr),
-	m_pUtils(nullptr),
-	m_pHTTP(nullptr),
-
-	m_SteamUserFn(nullptr),
-	m_SteamPipeFn(nullptr),
-	m_GetCallback(nullptr),
-	m_FreeLastCallback(nullptr),
-	m_GetCallbackDetour(nullptr),
-
-	m_ServerHookID(0),
-	m_UtilsHookID(0),
-	m_HttpHookID(0)
-{
-}
-
-
-SteamToolsGameServer::~SteamToolsGameServer()
-{
-	RemoveCallbackHook();
-}
-
-
 void SteamToolsGameServer::SetSteamClient(ISteamClient* client)
 {
 	m_pClient = client;
@@ -168,15 +142,6 @@ void SteamToolsGameServer::AddCallbackHook()
 	else
 	{
 		MF_PrintSrvConsole("[STEAMTOOLS] Failled to detour GetCallback\n");
-	}
-}
-
-void SteamToolsGameServer::RemoveCallbackHook()
-{
-	if (m_GetCallbackDetour)
-	{
-		m_GetCallbackDetour->Destroy();
-		m_GetCallbackDetour = nullptr;
 	}
 }
 

@@ -8,39 +8,15 @@
 
 #include "steamtools.h"
 
-ke::AutoPtr<SteamTools> g_SteamTools;
-
-SteamTools::SteamTools()
-	:
-	m_Detours   (nullptr),
-	m_GameServer(nullptr),
-	m_Forwards  (nullptr),
-	m_Hooks     (nullptr),
-	m_Natives   (nullptr),
-
-	m_APiActivatedCallback(nullptr),
-	m_APiShutdownCallback(nullptr),
-
-	m_Loaded(false)
-{
-}
-
-SteamTools::~SteamTools()
-{
-	delete m_GameServer;
-	delete m_Detours;
-	delete m_Forwards;
-	delete m_Hooks;
-	delete m_Natives;
-}
+UniquePtr<SteamTools> g_SteamTools;
 
 void SteamTools::Init()
 {
-	m_GameServer = new SteamToolsGameServer;
-	m_Detours    = new SteamToolsGSDetours;
-	m_Forwards   = new SteamToolsGSForwards;
-	m_Hooks      = new SteamToolsGSHooks;
-	m_Natives    = new SteamToolsGSNatives;
+	m_GameServer = MakeUnique<SteamToolsGameServer>();
+	m_Detours    = MakeUnique<SteamToolsGSDetours>();
+	m_Forwards   = MakeUnique<SteamToolsGSForwards>();
+	m_Hooks      = MakeUnique<SteamToolsGSHooks>();
+	m_Natives    = MakeUnique<SteamToolsGSNatives>();
 }
 
 void SteamTools::RequestState(void(*APIActivatedFunc)(), void(*APIShutdownFunc)())
@@ -66,6 +42,29 @@ void SteamTools::OnAPIShutdown()
 bool SteamTools::IsSteamToolsLoaded()
 {
 	return m_Loaded;
+}
+
+int SteamTools::FindGameClient(CSteamID &target)
+{
+	int id;
+
+	for (id = 1; id <= gpGlobals->maxClients; ++id)
+	{
+		if (MF_IsPlayerAuthorized(id) && !MF_IsPlayerBot(id) && !MF_IsPlayerHLTV(id))
+		{
+			if (g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(MF_GetPlayerEdict(id))) == target)
+			{
+				break;
+			}
+		}
+	}
+
+	if (id > gpGlobals->maxClients)
+	{
+		id = -1;
+	}
+
+	return id;
 }
 
 CSteamID SteamTools::RenderedIDToCSteamID(const char* pRenderedID)

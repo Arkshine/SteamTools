@@ -169,6 +169,9 @@ class CDetourManager;
 class CDetour
 {
 public:
+	~CDetour();
+
+public:
 
 	bool IsEnabled();
 

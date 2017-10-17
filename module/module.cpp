@@ -18,7 +18,7 @@ HLTypeConversion TypeConversion;
 
 void OnAmxxAttach()
 {
-	g_SteamTools = new SteamTools;
+	g_SteamTools = MakeUnique<SteamTools>();
 
 	g_SteamTools->Init();
 	g_SteamTools->RequestState(OnSteamAPIActivated, OnSteamAPIShutdown);

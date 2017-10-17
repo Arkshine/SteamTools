@@ -14,11 +14,6 @@ class SteamToolsGSForwards
 {
 	public:
 
-		SteamToolsGSForwards();
-		~SteamToolsGSForwards();
-
-	public:
-
 		void RegisterForwards();
 
 	public:
@@ -39,12 +34,12 @@ class SteamToolsGSForwards
 
 	private:
 
-		int m_ForwardFullyLoaded;
-		int m_ForwardShutdown;
-		int m_ForwardConnected;
-		int m_ForwardConnectFailure;
-		int m_ForwardDisconnected;
-		int m_ForwardValidateClient;
-		int m_ForwardInvalidateClient;
-		int m_ForwardGroupStatusResult;
+		int m_ForwardFullyLoaded       = -1;
+		int m_ForwardShutdown          = -1;
+		int m_ForwardConnected         = -1;
+		int m_ForwardConnectFailure    = -1;
+		int m_ForwardDisconnected      = -1;
+		int m_ForwardValidateClient    = -1;
+		int m_ForwardInvalidateClient  = -1;
+		int m_ForwardGroupStatusResult = -1;
 };

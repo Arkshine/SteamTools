@@ -200,18 +200,14 @@ static cell AMX_NATIVE_CALL Steam_AccountIDToPlayerID(AMX* amx, cell* params)
 		return 0;
 	}
 
-	for (auto id = 1; id <= gpGlobals->maxClients; ++id)
+	auto id = g_SteamTools->FindGameClient(cSteamID);
+
+	if (id == -1)
 	{
-		if (MF_IsPlayerAuthorized(id) && !MF_IsPlayerBot(id) && !MF_IsPlayerHLTV(id))
-		{
-			if (g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(TypeConversion.id_to_edict(id))) == cSteamID)
-			{
-				return id;
-			}
-		}
+		return 0;
 	}
 
-	return 0;
+	return id;
 }
 
 // native Steam_GetCSteamIDForClient(client, steamID[], maxlength);

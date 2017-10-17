@@ -23,15 +23,6 @@ SH_DECL_HOOK1_void(ISteamGameServer, SetMapName         , SH_NOATTRIB, 0, const 
 SH_DECL_HOOK1_void(ISteamGameServer, SetServerName      , SH_NOATTRIB, 0, const char*);
 
 SteamToolsGSHooks::SteamToolsGSHooks()
-	:
-	m_ForwardRestartRequested(0),
-	m_ForwardTokenRequested(0),
-	m_RestartHookID(0),
-	m_LogAnonHookID(0),
-	m_BSecureHookID(0),
-	m_SetMapNameHookID(0),
-	m_SetServerNameHookID(0),
-	m_ShowGameServerInfo(false)
 {
 	CVAR_REGISTER(&CvarInitSetSteamAccount);
 	CvarSetSteamAccount = CVAR_GET_POINTER(CvarInitSetSteamAccount.name);
@@ -82,8 +73,6 @@ void SteamToolsGSHooks::LogOnAnonymous(void)
 	{
 		SH_RETURN_META(SH_MRES_IGNORED);
 	}
-
-	m_ShowGameServerInfo = true;
 
 	pGameServer->LogOn(CvarSetSteamAccount->string, CvarSetSteamAccount->string);
 

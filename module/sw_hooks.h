@@ -37,17 +37,17 @@ class SteamToolsGSHooks
 
 	private: // AMX Mod X Forward id
 
-		int m_ForwardRestartRequested;
-		int m_ForwardTokenRequested;
+		int m_ForwardRestartRequested = -1;
+		int m_ForwardTokenRequested   = -1;
 
 	private: // Virtual Hook Id
 
-		int m_RestartHookID;
-		int m_LogAnonHookID;
-		int m_BSecureHookID;
+		int m_RestartHookID = 0;
+		int m_LogAnonHookID = 0;
+		int m_BSecureHookID = 0;
 
-		int m_SetMapNameHookID;
-		int m_SetServerNameHookID;
+		int m_SetMapNameHookID = 0;
+		int m_SetServerNameHookID = 0;
 
 	private: // Custom Server State
 

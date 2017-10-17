@@ -61,7 +61,7 @@ DETOUR_DECL_STATIC0(Hook_SteamGameServer_Shutdown, void)
 	DETOUR_STATIC_CALL(Hook_SteamGameServer_Shutdown)();
 }
 
-SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_ShutdownGameServerDetour(nullptr), m_InitSteamClientDetour(nullptr)
+SteamToolsGSDetours::SteamToolsGSDetours()
 {
 #if defined(KE_WINDOWS)
 
@@ -113,23 +113,3 @@ SteamToolsGSDetours::SteamToolsGSDetours() : m_InitGameServerDetour(nullptr), m_
 	}
 }
 
-SteamToolsGSDetours::~SteamToolsGSDetours()
-{
-	if (m_InitGameServerDetour)
-	{
-		m_InitGameServerDetour->Destroy();
-		m_InitGameServerDetour = nullptr;
-	}
-
-	if (m_ShutdownGameServerDetour)
-	{
-		m_ShutdownGameServerDetour->Destroy();
-		m_ShutdownGameServerDetour = nullptr;
-	}
-
-	if (m_InitSteamClientDetour)
-	{
-		m_InitSteamClientDetour->Destroy();
-		m_InitSteamClientDetour = nullptr;
-	}
-}

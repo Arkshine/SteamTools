@@ -9,23 +9,6 @@
 #include "sw_forwards.h"
 #include "steamtools.h"
 
-SteamToolsGSForwards::SteamToolsGSForwards()
-	:
-	m_ForwardFullyLoaded(0),
-	m_ForwardShutdown(0),
-	m_ForwardConnected(0),
-	m_ForwardConnectFailure(0),
-	m_ForwardDisconnected(0),
-	m_ForwardValidateClient(0),
-	m_ForwardInvalidateClient(0),
-	m_ForwardGroupStatusResult(0)
-{
-}
-
-SteamToolsGSForwards::~SteamToolsGSForwards()
-{
-}
-
 void SteamToolsGSForwards::RegisterForwards()
 {
 	m_ForwardFullyLoaded       = MF_RegisterForward("Steam_FullyLoaded"               , ET_IGNORE, FP_DONE);
@@ -85,23 +68,7 @@ void SteamToolsGSForwards::OnSteamServersDisconnected(SteamServersDisconnected_t
 
 void SteamToolsGSForwards::OnGroupStatusResult(GSClientGroupStatus_t* pGroup)
 {
-	int id;
-
-	for (id = 1; id <= gpGlobals->maxClients; ++id)
-	{
-		if (MF_IsPlayerAuthorized(id) && !MF_IsPlayerBot(id) && !MF_IsPlayerHLTV(id))
-		{
-			if (g_SteamTools->RenderedIDToCSteamID(GETPLAYERAUTHID(MF_GetPlayerEdict(id))) == pGroup->m_SteamIDUser)
-			{
-				break;
-			}
-		}
-	}
-
-	if (id > gpGlobals->maxClients)
-	{
-		id = -1;
-	}
+	auto id = g_SteamTools->FindGameClient(pGroup->m_SteamIDUser);
 
 	MF_ExecuteForward(m_ForwardGroupStatusResult, id, pGroup->m_SteamIDGroup.GetAccountID(), pGroup->m_bMember, pGroup->m_bOfficer);
 }
