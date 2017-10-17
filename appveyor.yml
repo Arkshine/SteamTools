@@ -21,7 +21,7 @@ install:
 - cd ..\amxmodx
 
 build_script:
-- '"%VS120COMNTOOLS%\vsvars32.bat"'
+- '"%VS140COMNTOOLS%\vsvars32.bat"' 
 - mkdir build
 - cd build
 - c:\python27\python ../support/configure.py --enable-optimize --disable-auto-versioning
