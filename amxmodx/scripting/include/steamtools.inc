@@ -83,7 +83,9 @@ forward Steam_RestartRequested();
  * @param client         Client index
  * @param groupAccountID 32-bit account ID of group
  *
- * @return               A bool representing whether or not the request was sent to Steam.
+ * @return               Whether or not the request was sent to Steam.
+ * @error                An error is thrown if the API is not ready to be used yet
+ *                       or the group account id is invalid.
  */
 native bool:Steam_RequestGroupStatus(client, groupAccountID);
 
@@ -96,6 +98,8 @@ native bool:Steam_RequestGroupStatus(client, groupAccountID);
  * @param groupAccountID 32-bit account ID of group
  *
  * @return               A bool representing whether or not the request was sent to Steam.
+ * @error                An error is thrown if the API is not ready to be used yet
+ *                       or the group account id is invalid.
  */
 native bool:Steam_RequestGroupStatusAuthID(authID, groupAccountID);
 
@@ -117,7 +121,8 @@ forward Steam_GroupStatusResult(client, groupAccountID, bool:groupMember, bool:g
 /**
  * Gets the current status of VAC on the server.
  *
- * @return              A bool representing the current VAC status.
+ * @return              The current VAC status.
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native bool:Steam_IsVACEnabled();
 
@@ -128,7 +133,7 @@ native bool:Steam_IsVACEnabled();
  *
  * @param octets        Reference to an array to be filled with the octets of
  *                      the IP address.
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_GetPublicIP(octets[4]);
 
@@ -138,6 +143,7 @@ native Steam_GetPublicIP(octets[4]);
  * @note IP address is known only after server is connected to Steam.
  *
  * @return              Address IP as 32-bit unsigned integer
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_GetPublicIPCell();
 
@@ -149,9 +155,10 @@ native Steam_GetPublicIPCell();
 native bool:Steam_IsLoaded();
 
 /**
- * Returns whether Server is connected to Steam.
+ * Returns whether server is connected to Steam.
  *
  * @return              True if loaded, false otherwise
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native bool:Steam_IsConnected();
 
@@ -159,23 +166,27 @@ native bool:Steam_IsConnected();
  * Sets the description of the gamen, displayed in the steam server browser.
  *
  * @param description   Game description to set
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_SetGameDescription(const description[]);
 
 /**
  * Sets name of map to report in the server browser.
  *
+ * @note To use the default value, send an empty string.
+ *
  * @param name			Map name to set
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_SetMapName(const name[]);
 
 /**
  * Sets the name of server to report in the server browser.
  *
+ * @note To use the default value, send an empty string.
+ *
  * @param name			 Server name to set
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_SetServerName(const name[]);
 
@@ -188,7 +199,7 @@ native Steam_SetServerName(const name[]);
  * @param key           Name of the key to set, is created if it does not already exist
  * @param value         Value of the key to set, the named key is removed if this is blank
  *
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_SetRule(const key[], const value[]);
 
@@ -198,14 +209,14 @@ native Steam_SetRule(const key[], const value[]);
  * @note This list is used to build the response to the A2S_RULES query
  *       and is generally known as the list of public cvars.
  *
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_ClearRules();
 
 /**
  * Forces a heartbeat to steam at the next opportunity
  *
- * @noreturn
+ * @error               An error is thrown if the API is not ready to be used yet.
  */
 native Steam_ForceHeartbeat();
 
@@ -217,6 +228,9 @@ native Steam_ForceHeartbeat();
  * @param client            Client's index
  *
  * @return                  Result code, see k_EUserHasLicenseResult* constants
+ * @error                   An error is thrown if the API is not ready to be used yet,
+ *                          the client index is invalid or the server app id could not be
+ *                          retrieved.
  */
 native EUserHasLicenseForAppResult:Steam_HasLicenseForApp(client);
 
@@ -254,6 +268,8 @@ native Steam_AccountIDToPlayerID(accountID);
 /**
  * Gets a client's Steam ID structure.
  *
+ * note: A structure (aka steamID64) has usally the following format: 765XXXXXXXXXXXXXX.
+ *
  * @param client            Client index
  * @param steamID           Buffer to copy value to
  * @param maxlength         Maximum size of the buffer
@@ -266,6 +282,8 @@ native Steam_GetCSteamIDForClient(client, steamID[], maxlength);
 /**
  * Converts a rendered Steam ID to its structure.
  *
+ * note: A structure (aka steamID64) has usally the following format: 765XXXXXXXXXXXXXX.
+ *
  * @param renderedID        Rendered Steam ID to convert
  * @param steamID           Buffer to copy value to
  * @param maxlength         Maximum size of the buffer
@@ -277,6 +295,8 @@ native Steam_RenderedIDToCSteamID(const renderedID[], steamID[], maxlength);
 
 /**
  * Converts a Steam ID structure to its rendered string.
+ *
+ * note: A rendered string has usally the following format: STEAM_X:Y:Z.
  *
  * @param steamID           Steam ID structure to convert
  * @param renderedID        Buffer to copy value to
