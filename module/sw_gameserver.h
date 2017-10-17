@@ -66,6 +66,7 @@ class SteamToolsGameServer
 		FreeLastCallbackFn m_FreeLastCallback = nullptr;
 
 		AutoPtr<CDetour>   m_GetCallbackDetour;
+
 	private:
 
 		int m_ServerHookID = 0;

@@ -13,5 +13,10 @@ Not all functions are going to work for GoldSrc, but let met know if they are so
 
 API
 ---
-The fast way is to check directly https://github.com/Arkshine/SteamTools/blob/master/amxmodx/scripting/include/steamtools.inc include.
+The fast way is to check directly  [`steamtools.inc`](https://github.com/Arkshine/SteamTools/blob/master/amxmodx/scripting/include/steamtools.inc) include.
 All is documented, it should be easy to use them.
+
+TODO
+----
+* [ ] Enabling hooks/forwards on-demand
+* [ ] Maybe implementing the HTTP interface
