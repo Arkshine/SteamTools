@@ -87,7 +87,7 @@ bool SteamToolsGSHooks::BSecure()
 	auto cSteamID = pGameServer->GetSteamID();
 
 	MF_PrintSrvConsole("   Public IP is %i.%i.%i.%i\n", publicIP >> 24 & 255, publicIP >> 16 & 255, publicIP >> 8 & 255, publicIP & 255);
-	MF_PrintSrvConsole("   Assigned %s gameserver Steam %s (%llu)\n", cSteamID.GetEAccountType() == k_EAccountTypeAnonGameServer ? "anonymous" : "peristent", cSteamID.SteamRender(), cSteamID.ConvertToUint64());
+	MF_PrintSrvConsole("   Assigned %s gameserver Steam %s (%llu)\n", cSteamID.GetEAccountType() == k_EAccountTypeAnonGameServer ? "anonymous" : "persistent", cSteamID.SteamRender(), cSteamID.ConvertToUint64());
 
 	auto isSecure = SH_CALL(pGameServer, &ISteamGameServer::BSecure)();
 
