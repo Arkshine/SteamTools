@@ -77,7 +77,7 @@ static cell AMX_NATIVE_CALL Steam_SetGameDescription(AMX* amx, cell* params)
 	int length;
 	auto description = MF_GetAmxString(amx, params[arg_description], 0, &length);
 
-	if (length >= k_cbMaxGameServerGameDescription)
+	if (static_cast<size_t>(length) >= k_cbMaxGameServerGameDescription)
 	{
 		description[k_cbMaxGameServerGameDescription] = '\0';
 	}
